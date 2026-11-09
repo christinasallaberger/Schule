@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Adverbiale und Präpositionalobjekt</title>
+<!-- Angaben für die Lehrer-Übersicht (linkzusammenfassung.html) -->
+<meta name="uebersicht-kapitel" content="Deutsch: Satzglieder">
+<meta name="uebersicht-thema" content="Adverbiale und Präpositionalobjekt">
+<meta name="uebersicht-info" content="Satzglied antippen, mit dem Fragewort danach fragen und bestimmen: Zeit, Ort, Art und Weise, Grund oder Präpositionalobjekt; 8 Sätze pro Runde.">
+<meta name="uebersicht-gruppe" content="alle">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #FBFCFE; --grid: #DCE7F2; --ink: #1D3A8A; --text: #1E2433; --muted: #5B6270;
+  --margin: #E0484E; --line: #C9D6E6; --card: #FFFFFF;
+  --ok: #1C7A44; --ok-bg: #DFF3E6; --warn: #8A4B0E; --warn-bg: #FCEBD9; --bad: #B3262C; --bad-bg: #FBE1E2;
+  --merke-bg: #FFF7D6; --merke-line: #E8C64A;
+  --fill: #E6EEFB; --given: #1D3A8A; --wanted: #D2343A;
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #141821; --grid: #1F2634; --ink: #9DB6FF; --text: #E6E9F0; --muted: #9AA2B2;
+    --margin: #F0686D; --line: #2C3546; --card: #1A1F2A;
+    --ok: #8FE0AE; --ok-bg: #1D3F2A; --warn: #FFD2B0; --warn-bg: #4A2D1A; --bad: #FFB3B6; --bad-bg: #4A1E22;
+    --merke-bg: #3A3216; --merke-line: #B8962A;
+    --fill: #233056; --given: #B9CBFF; --wanted: #FF8A8F;
+    color-scheme: dark;
+  }
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+  color: var(--text);
+  font-family: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.0625rem; line-height: 1.5;
+}
+main { max-width: 760px; margin: 0 auto; padding: 2rem 1.1rem 4rem; }
+h1 {
+  font-family: "Bricolage Grotesque", "Atkinson Hyperlegible", system-ui, sans-serif;
+  font-weight: 800; font-size: clamp(1.9rem, 6vw, 2.8rem); line-height: 1.05; color: var(--ink); margin: 0 0 .4rem;
+}
+h2 { font-family: "Bricolage Grotesque", "Atkinson Hyperlegible", system-ui, sans-serif; font-weight: 700; font-size: 1.4rem; margin: 0 0 .6rem; }
+.lead { color: var(--muted); margin: 0 0 1.5rem; }
+.card { background: var(--card); border: 2px solid var(--line); border-radius: 14px; padding: 1.25rem; margin-bottom: 1.25rem; }
+button {
+  font: inherit; font-weight: 700; cursor: pointer; border-radius: 10px; padding: .55rem 1.1rem;
+  border: 2px solid var(--ink); background: var(--card); color: var(--ink);
+}
+button.primary { background: var(--ink); color: var(--paper); }
+button:disabled { opacity: .45; cursor: default; }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--margin); outline-offset: 2px; }
+input[type="text"] {
+  font: inherit; font-size: 1.25rem; padding: .5rem .8rem; border: 2px solid var(--line); border-radius: 10px;
+  background: var(--paper); color: var(--text); width: 100%;
+}
+input[type="text"]:focus { border-color: var(--ink); outline: none; }
+.eingabe { display: flex; gap: .5rem; align-items: center; }
+.namebar { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; justify-content: space-between; margin-bottom: 1rem; font-weight: 700; }
+.namebar .who { color: var(--ink); }
+.progress { color: var(--muted); font-weight: 400; }
+.nav { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: 1rem; }
+.nav button { width: 2.6rem; height: 2.6rem; padding: 0; border-radius: 8px; border-color: var(--line); }
+.nav button.cur { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink) inset; }
+.nav button.s-richtig { background: var(--ok-bg); color: var(--ok); border-color: var(--ok); }
+.nav button.s-fehler { background: var(--warn-bg); color: var(--warn); border-color: var(--warn); }
+.nav button.s-loesung { background: var(--bad-bg); color: var(--bad); border-color: var(--bad); }
+.kopf { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+.kopf .art { color: var(--muted); font-size: .95rem; }
+.angabe { font-size: 1.15rem; margin: .4rem 0 .8rem; }
+.skizze { display: flex; justify-content: center; margin: .25rem 0 1rem; }
+.skizze svg { width: 100%; max-width: 340px; height: auto; }
+.skizze .tri { fill: var(--fill); stroke: var(--text); stroke-width: 2.5; stroke-linejoin: round; }
+.skizze .hoehe { stroke: var(--text); stroke-width: 2; stroke-dasharray: 6 5; }
+.skizze .rw { fill: none; stroke: var(--text); stroke-width: 1.6; }
+.skizze text { font-family: "Atkinson Hyperlegible", system-ui, sans-serif; font-size: 17px; fill: var(--muted); }
+.skizze text.geg { fill: var(--given); font-weight: 700; }
+.skizze text.ges { fill: var(--wanted); font-weight: 700; }
+.skizze text.ecke { font-size: 15px; }
+.skizze .box { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+.schritt { border-top: 2px solid var(--line); padding-top: .8rem; margin-top: .8rem; }
+.schritt.aus { opacity: .45; }
+.schritt h3 { margin: 0 0 .5rem; font-size: 1.05rem; color: var(--ink); }
+.wahl { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .45rem; }
+.wahl button { font-weight: 400; font-size: 1.1rem; border-color: var(--line); text-align: center; padding: .6rem .5rem; }
+.wahl button.ok { background: var(--ok-bg); color: var(--ok); border-color: var(--ok); font-weight: 700; }
+.wahl button.falsch { background: var(--bad-bg); color: var(--bad); border-color: var(--bad); text-decoration: line-through; }
+.formel { font-size: 1.2rem; font-weight: 700; }
+.einsetzen { font-size: 1.2rem; margin-bottom: .5rem; }
+.einheit { font-size: 1.15rem; font-weight: 700; min-width: 2.5rem; }
+.vorschau { min-height: 1.4rem; margin: .4rem 0 0; color: var(--muted); }
+.aktionen { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+.meldung { margin-top: .6rem; padding: .65rem .9rem; border-radius: 10px; display: none; }
+.meldung.ok { display: block; background: var(--ok-bg); color: var(--ok); }
+.meldung.warn { display: block; background: var(--warn-bg); color: var(--warn); }
+.meldung.bad { display: block; background: var(--bad-bg); color: var(--bad); }
+.weg { margin-top: .5rem; color: var(--text); }
+.weg div { margin: .1rem 0; }
+.weiter-zur-merke { margin-top: 1rem; padding: .75rem 1rem; border-radius: 10px; background: var(--merke-bg); border-left: 5px solid var(--merke-line); font-weight: 700; }
+.weiter-zur-merke a { color: inherit; }
+.merke { background: var(--merke-bg); border: 2px solid var(--merke-line); }
+.merke .heft { font-weight: 700; padding: .5rem .8rem; border-radius: 8px; border: 2px dashed var(--merke-line); margin-bottom: 1rem; }
+.merke h3 { margin: 1rem 0 .3rem; font-size: 1.1rem; }
+.merke .tab-wrap { margin: .3rem 0 .8rem; }
+.merke table td, .merke table th { border-bottom-color: var(--merke-line); }
+.merke .bsp div { margin: .15rem 0; }
+.merke .bsp { margin: .3rem 0 .8rem; padding-left: .8rem; border-left: 3px solid var(--merke-line); }
+table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+th, td { text-align: left; padding: .45rem .4rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tab-wrap { overflow-x: auto; }
+.badge { font-weight: 700; padding: .1rem .55rem; border-radius: 999px; white-space: nowrap; font-size: .85rem; }
+.badge.richtig { background: var(--ok-bg); color: var(--ok); }
+.badge.fehler { background: var(--warn-bg); color: var(--warn); }
+.badge.loesung { background: var(--bad-bg); color: var(--bad); }
+.badge.offen { background: var(--grid); color: var(--muted); }
+.zahlen { display: flex; flex-wrap: wrap; gap: .75rem; margin: .75rem 0 1rem; }
+.zahlen div { padding: .5rem .9rem; border-radius: 10px; background: var(--paper); border: 2px solid var(--line); }
+.zahlen b { font-size: 1.3rem; display: block; }
+
+/* Bildschirm-Tastatur */
+#pad {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: var(--card); border-top: 3px solid var(--ink);
+  padding: .5rem .6rem calc(.5rem + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -4px 16px rgba(27, 47, 107, .15);
+}
+#pad .padtop { display: flex; align-items: center; gap: .5rem; max-width: 30rem; margin: 0 auto .4rem; color: var(--muted); font-size: .9rem; }
+#pad .padtop span { margin-right: auto; font-weight: 700; color: var(--ink); }
+#pad .mini { padding: .25rem .6rem; font-size: .85rem; border-color: var(--line); }
+#pad .keys { display: grid; grid-template-columns: repeat(5, 1fr); gap: .3rem; max-width: 30rem; margin: 0 auto; }
+#pad .keys button {
+  padding: .6rem 0; font-size: 1.2rem; font-weight: 700; touch-action: manipulation;
+  background: var(--paper); color: var(--text); border: 2px solid var(--line); border-radius: .45rem;
+}
+#pad .keys button.op { background: var(--grid); }
+#pad .keys button.go { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+body.padon main { padding-bottom: 18rem; }
+/* Gleichungen */
+.gl { display: grid; grid-template-columns: minmax(0, 1fr) 6.5rem; gap: .5rem; align-items: center; font-size: 1.2rem; padding: .25rem 0; }
+.gl > span:last-child { border-left: 2px solid var(--text); padding-left: .6rem; color: var(--ink); font-weight: 700; min-height: 1.6rem; }
+.gl > span:last-child:empty { border-left-color: transparent; }
+.merke .gl { font-size: 1.1rem; padding: .05rem 0; }
+.bx {
+  display: inline-block; width: 4.2rem; font: inherit; font-size: 1.15rem; text-align: center;
+  padding: .2rem .3rem; margin: 0 .15rem; border: 2px solid var(--ink); border-radius: 8px;
+  background: var(--paper); color: var(--text);
+}
+.bx.ok { border-color: var(--ok); background: var(--ok-bg); }
+.bx.bad { border-color: var(--bad); background: var(--bad-bg); }
+.bx:disabled { opacity: 1; }
+.var { font-style: italic; }
+.ops { display: flex; flex-wrap: wrap; gap: .4rem; margin: .3rem 0 .4rem; }
+.ops button { font-size: 1.1rem; padding: .4rem .9rem; border-color: var(--line); }
+.ops button.falsch { background: var(--bad-bg); color: var(--bad); border-color: var(--bad); text-decoration: line-through; }
+.frage { color: var(--muted); font-size: .95rem; margin: .4rem 0 .1rem; }
+.mini2 { padding: .35rem .9rem; font-size: .95rem; margin-top: .4rem; }
+
+/* Speicher-Code */
+.codefrage { margin-top: 1rem; }
+.codefrage summary { cursor: pointer; color: var(--ink); font-weight: 700; }
+.codefrage input { margin-top: .4rem; letter-spacing: .08em; text-transform: uppercase; }
+.codebox code { font-size: 1.4rem; font-weight: 700; letter-spacing: .1em; color: var(--ink); padding: .3rem .6rem; border: 2px dashed var(--line); border-radius: 8px; }
+/* Satz */
+.satz { font-size: clamp(1.3rem, 4.5vw, 1.6rem); line-height: 2.1; margin: .6rem 0 .4rem; display: flex; flex-wrap: wrap; gap: .1rem .55rem; align-items: baseline; }
+.sg {
+  font: inherit; font-weight: 400; color: var(--text); cursor: pointer;
+  background: transparent; border: 2px dashed var(--line); border-radius: 8px; padding: 0 .35rem; line-height: 1.6;
+}
+.sg:hover { background: var(--grid); }
+.sg:disabled { cursor: default; opacity: 1; }
+.sg.falsch { border-style: solid; border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+.sg.ziel { border-style: solid; border-color: var(--ok); background: var(--ok-bg); color: var(--ok); font-weight: 700; }
+.sg.still { border-color: transparent; }
+#pad .keys { grid-template-columns: repeat(4, 1fr); max-width: 34rem; }
+#pad .keys button { font-size: 1rem; padding: .5rem .2rem; }
+#pad .padtop { max-width: 34rem; }
+.ergebnis { margin-top: .4rem; }
+.ergebnis div { margin: .15rem 0; }
+[hidden] { display: none !important; }
+@media print {
+  body { background: #fff; color: #000; }
+  .no-print, #aufgaben, #pad { display: none !important; }
+}
+</style>
+</head>
+<body>
+<main>
+  <h1>Adverbiale und Präpositionalobjekt</h1>
+  <p class="lead">Finde im Satz die adverbiale Bestimmung oder das Präpositionalobjekt, frag mit dem passenden Fragewort danach und bestimme die Art. 8 Sätze pro Runde, danach geht es mit neuen Sätzen weiter.</p>
+
+  <section class="card" id="start">
+    <h2>Wie heißt du?</h2>
+    <p>Gib zuerst deinen Vor- und Nachnamen ein. Er steht am Ende in deiner Auswertung und kann danach <b>nicht mehr geändert</b> werden. Hast du auf diesem Gerät schon geübt, machst du automatisch dort weiter, wo du aufgehört hast. Auf ein anderes Gerät nimmst du deinen Fortschritt mit dem Speicher-Code mit.</p>
+    <div class="eingabe">
+      <input type="text" id="name-in" autocomplete="name" placeholder="Vor- und Nachname" aria-label="Vor- und Nachname">
+      <button class="primary" id="start-btn" type="button">Los geht’s</button>
+    </div>
+    <details class="codefrage" id="code-frage">
+      <summary>Bereits einen Speicher-Code von einem anderen Gerät?</summary>
+      <p class="hint">Gib deinen Namen oben genau so ein wie auf dem anderen Gerät und dann hier den Code.</p>
+      <input type="text" id="code-in" autocomplete="off" spellcheck="false" placeholder="z. B. 4K7P-XM2Q-9" aria-label="Speicher-Code">
+    </details>
+    <p class="vorschau" id="name-hinweis"></p>
+  </section>
+
+  <section id="aufgaben" hidden>
+    <div class="namebar">
+      <span class="who" id="who"></span>
+      <span class="progress" id="progress"></span>
+      <button type="button" class="mini2 no-print" id="code-btn" aria-expanded="false">💾 Fortschritt mitnehmen</button>
+    </div>
+    <div class="card codebox no-print" id="code-box" hidden>
+      <p>Schreib dir diesen <b>Speicher-Code</b> auf oder kopiere ihn. Auf einem anderen Gerät gibst du beim Start deinen Namen und diesen Code ein und machst dort weiter.</p>
+      <div class="eingabe"><code id="code-show"></code><button type="button" class="mini2" id="code-copy">Kopieren</button></div>
+      <p class="hint">Fertige Sätze und deine Fehlversuche werden übernommen. Ein Satz, den du gerade erst angefangen hast, beginnt dort wieder bei Schritt 1.</p>
+    </div>
+    <nav class="nav no-print" id="nav" aria-label="Sätze"></nav>
+
+    <div class="card" id="karte">
+      <div class="kopf"><h2 id="titel">Satz 1</h2></div>
+      <div class="satz" id="satz"></div>
+
+      <div class="schritt" id="s1">
+        <h3>Schritt 1: Tippe die adverbiale Bestimmung oder das Präpositionalobjekt an</h3>
+        <p class="hint">Jeder Satz hat genau eines davon. Die Satzglieder sind durch Abstände getrennt.</p>
+      </div>
+      <div class="schritt" id="s2">
+        <h3>Schritt 2: Mit welchem Fragewort fragst du danach?</h3>
+        <div class="eingabe">
+          <input type="text" id="frage" class="pin" autocomplete="off" spellcheck="false" placeholder="Fragewort" aria-label="Fragewort">
+          <button type="button" class="primary" id="frage-btn">Überprüfen</button>
+        </div>
+        <p class="vorschau" id="frage-ganz"></p>
+      </div>
+      <div class="schritt" id="s3">
+        <h3>Schritt 3: Was ist es?</h3>
+        <div class="wahl" id="w3"></div>
+      </div>
+      <div class="meldung" id="meldung" role="status" aria-live="polite"></div>
+      <div class="weiter-zur-merke" id="merke-hinweis" hidden>
+        ✏️ Bevor du weitermachst: Schreib jetzt die <a href="#merke">Zusammenfassung unten</a> mit den Beispielen in dein Heft ab!
+      </div>
+      <div class="aktionen no-print">
+        <button type="button" id="zurueck">◀ Zurück</button>
+        <button type="button" id="vor">Weiter ▶</button>
+      </div>
+    </div>
+
+    <div class="aktionen no-print" style="margin-bottom:1.25rem">
+      <button type="button" id="zur-auswertung">Auswertung anzeigen</button>
+      <button type="button" class="neue-runde">Neue Runde mit neuen Sätzen</button>
+    </div>
+
+    <section class="card merke" id="merke">
+      <h2>📒 Zusammenfassung</h2>
+      <div class="heft">✏️ Schreib diese Zusammenfassung mit den Beispielen in dein Heft ab!</div>
+      <h3>Adverbiale Bestimmungen</h3>
+      <p>Sie sagen, <b>wann</b>, <b>wo</b>, <b>wie</b> oder <b>warum</b> etwas geschieht. Du erkennst sie am Fragewort.</p>
+      <div class="tab-wrap">
+        <table>
+          <thead><tr><th>Art</th><th>Frage</th><th>Beispiel</th></tr></thead>
+          <tbody>
+            <tr><td>Temporal (Zeit)</td><td>Wann? Seit wann? Wie lange?</td><td>am Montag</td></tr>
+            <tr><td>Lokal (Ort)</td><td>Wo? Wohin? Woher?</td><td>im Geschäft</td></tr>
+            <tr><td>Modal (Art und Weise)</td><td>Wie?</td><td>sehr sorgfältig</td></tr>
+            <tr><td>Kausal (Grund)</td><td>Warum? Weshalb?</td><td>wegen des Regens</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Präpositionalobjekt</h3>
+      <p>Die <b>Präposition gehört fest zum Verb</b>: sich interessieren <b>für</b>, warten <b>auf</b>, denken <b>an</b>. Du fragst mit <b>wo(r) + Präposition</b>: Wofür? Worauf? Woran? Bei Personen: Auf wen? Um wen?</p>
+      <div class="bsp">
+        <div>Lukas interessiert sich <b>für Technik</b>. → <b>Wofür</b> interessiert sich Lukas? → Präpositionalobjekt</div>
+      </div>
+      <h3>So unterscheidest du</h3>
+      <div class="bsp">
+        <div>Anna wartet <b>auf den Bus</b>. → <b>Worauf</b> wartet Anna? → Präpositionalobjekt</div>
+        <div>Anna wartet <b>an der Bushaltestelle</b>. → <b>Wo</b> wartet Anna? → Adverbiale des Ortes</div>
+      </div>
+    </section>
+  </section>
+
+  <section class="card" id="auswertung" hidden>
+    <h2>Auswertung</h2>
+    <p id="aw-kopf"></p>
+    <div class="zahlen" id="aw-zahlen"></div>
+    <div class="tab-wrap">
+      <table>
+        <thead><tr><th>Nr.</th><th>Satz</th><th>Lösung</th><th>Fehlversuche</th><th>Ergebnis</th></tr></thead>
+        <tbody id="aw-tab"></tbody>
+      </table>
+    </div>
+    <div class="aktionen no-print">
+      <button type="button" id="aw-zurueck">Zurück zu den Sätzen</button>
+      <button type="button" class="neue-runde">Neue Runde mit neuen Sätzen</button>
+      <button type="button" class="primary" id="aw-druck">Drucken</button>
+    </div>
+  </section>
+</main>
+
+<div id="pad" class="no-print" hidden role="group" aria-label="Eingabehilfe">
+  <div class="padtop"><span>Fragewörter</span>
+    <button type="button" class="mini" id="padSys">Handy-Tastatur einblenden</button>
+    <button type="button" class="mini" id="padHide" aria-label="Eingabehilfe schließen">✕</button>
+  </div>
+  <div class="keys" id="padkeys"></div>
+</div>
+
+<script>
+/* =========================================================
+   Sätze: Satzglieder mit | getrennt, das gesuchte Satzglied in [ ]
+   t: temp, lok, mod, kaus, po   q: richtige Fragewörter   f: ganze Frage
+   ========================================================= */
+const SAETZE = {
+  temp: [
+    { s: "[Am Montag]|hat|Emma|ein Vorstellungsgespräch.", q: ["wann"], f: "Wann hat Emma ein Vorstellungsgespräch?" },
+    { s: "Lukas|beginnt|[im September]|eine Lehre als Tischler.", q: ["wann"], f: "Wann beginnt Lukas eine Lehre als Tischler?" },
+    { s: "Der Bäcker|steht|[jeden Tag um vier Uhr]|auf.", q: ["wann"], f: "Wann steht der Bäcker auf?" },
+    { s: "Mira|kennt|ihre Chefin|[seit drei Jahren].", q: ["seit wann", "wie lange"], f: "Seit wann kennt Mira ihre Chefin?" },
+    { s: "Der Elektriker|repariert|die Leitung|[morgen früh].", q: ["wann"], f: "Wann repariert der Elektriker die Leitung?" },
+    { s: "[Nach der Schule]|macht|Jonas|seine Hausaufgaben.", q: ["wann"], f: "Wann macht Jonas seine Hausaufgaben?" },
+    { s: "Die Lehrlinge|schreiben|[im Juni]|ihre Abschlussprüfung.", q: ["wann"], f: "Wann schreiben die Lehrlinge ihre Abschlussprüfung?" },
+    { s: "Sarah|übt|[eine Stunde lang]|das Bewerbungsgespräch.", q: ["wie lange"], f: "Wie lange übt Sarah das Bewerbungsgespräch?" },
+    { s: "[Gestern]|besuchte|unsere Klasse|eine Autowerkstatt.", q: ["wann"], f: "Wann besuchte unsere Klasse eine Autowerkstatt?" },
+    { s: "Die Friseurin|hat|[am Vormittag]|viele Termine.", q: ["wann"], f: "Wann hat die Friseurin viele Termine?" }
+  ],
+  lok: [
+    { s: "[Im Geschäft]|berät|die Verkäuferin|eine Kundin.", q: ["wo"], f: "Wo berät die Verkäuferin eine Kundin?" },
+    { s: "Anna|wartet|[an der Bushaltestelle].", q: ["wo"], f: "Wo wartet Anna?" },
+    { s: "Emma|macht|ein Praktikum|[im Krankenhaus].", q: ["wo"], f: "Wo macht Emma ein Praktikum?" },
+    { s: "Der Koch|arbeitet|[in einem Hotel].", q: ["wo"], f: "Wo arbeitet der Koch?" },
+    { s: "Die Schüler|fahren|[nach Linz].", q: ["wohin"], f: "Wohin fahren die Schüler?" },
+    { s: "Tim|holt|die Werkzeuge|[aus dem Keller].", q: ["woher"], f: "Woher holt Tim die Werkzeuge?" },
+    { s: "Der Mechaniker|stellt|das Auto|[auf die Hebebühne].", q: ["wohin"], f: "Wohin stellt der Mechaniker das Auto?" },
+    { s: "Mein Bruder|kommt|[aus Salzburg].", q: ["woher"], f: "Woher kommt mein Bruder?" },
+    { s: "Die Gärtnerin|pflanzt|Blumen|[im Park].", q: ["wo"], f: "Wo pflanzt die Gärtnerin Blumen?" },
+    { s: "Lena|bringt|ihre Bewerbung|[zur Post].", q: ["wohin"], f: "Wohin bringt Lena ihre Bewerbung?" }
+  ],
+  mod: [
+    { s: "Der Tischler|arbeitet|[sehr sorgfältig].", q: ["wie"], f: "Wie arbeitet der Tischler?" },
+    { s: "Lisa|beantwortet|die Fragen|[freundlich].", q: ["wie"], f: "Wie beantwortet Lisa die Fragen?" },
+    { s: "Der Lehrling|kommt|[mit dem Fahrrad].", q: ["wie", "womit"], f: "Wie kommt der Lehrling?" },
+    { s: "Die Sanitäter|helfen|dem Verletzten|[schnell].", q: ["wie"], f: "Wie helfen die Sanitäter dem Verletzten?" },
+    { s: "Paul|präsentiert|sein Projekt|[ohne Notizen].", q: ["wie"], f: "Wie präsentiert Paul sein Projekt?" },
+    { s: "Die Malerin|streicht|die Wand|[mit großer Geduld].", q: ["wie"], f: "Wie streicht die Malerin die Wand?" },
+    { s: "[Ganz ruhig]|erklärt|die Ärztin|die Behandlung.", q: ["wie"], f: "Wie erklärt die Ärztin die Behandlung?" },
+    { s: "Jakob|löst|die Aufgabe|[ohne Hilfe].", q: ["wie"], f: "Wie löst Jakob die Aufgabe?" },
+    { s: "Die Verkäuferin|grüßt|die Kunden|[höflich].", q: ["wie"], f: "Wie grüßt die Verkäuferin die Kunden?" }
+  ],
+  kaus: [
+    { s: "[Wegen des Regens]|fällt|der Ausflug|aus.", q: ["warum", "weshalb", "wieso"], f: "Warum fällt der Ausflug aus?" },
+    { s: "Der Bauarbeiter|trägt|[aus Sicherheitsgründen]|einen Helm.", q: ["warum", "weshalb", "wieso"], f: "Warum trägt der Bauarbeiter einen Helm?" },
+    { s: "Marie|fehlt|[wegen einer Grippe].", q: ["warum", "weshalb", "wieso"], f: "Warum fehlt Marie?" },
+    { s: "[Aus Neugier]|öffnete|Ben|die Kiste.", q: ["warum", "weshalb", "wieso"], f: "Warum öffnete Ben die Kiste?" },
+    { s: "Die Firma|sucht|[wegen vieler Aufträge]|neue Mitarbeiter.", q: ["warum", "weshalb", "wieso"], f: "Warum sucht die Firma neue Mitarbeiter?" },
+    { s: "[Vor Freude]|weinte|Nina.", q: ["warum", "weshalb", "wieso"], f: "Warum weinte Nina?" },
+    { s: "Das Geschäft|bleibt|[wegen Krankheit]|geschlossen.", q: ["warum", "weshalb", "wieso"], f: "Warum bleibt das Geschäft geschlossen?" },
+    { s: "Der Zug|hatte|[wegen eines Unfalls]|Verspätung.", q: ["warum", "weshalb", "wieso"], f: "Warum hatte der Zug Verspätung?" },
+    { s: "[Aus Zeitmangel]|verschob|der Chef|die Besprechung.", q: ["warum", "weshalb", "wieso"], f: "Warum verschob der Chef die Besprechung?" }
+  ],
+  po: [
+    { s: "Lukas|interessiert sich|[für Technik].", q: ["wofür"], f: "Wofür interessiert sich Lukas?" },
+    { s: "Anna|wartet|[auf den Bus].", q: ["worauf"], f: "Worauf wartet Anna?" },
+    { s: "Die Schüler|freuen sich|[auf die Ferien].", q: ["worauf"], f: "Worauf freuen sich die Schüler?" },
+    { s: "Emma|denkt|[an ihre Prüfung].", q: ["woran"], f: "Woran denkt Emma?" },
+    { s: "Der Tierpfleger|kümmert sich|[um die Tiere].", q: ["worum"], f: "Worum kümmert sich der Tierpfleger?" },
+    { s: "Jonas|träumt|[von einem eigenen Auto].", q: ["wovon"], f: "Wovon träumt Jonas?" },
+    { s: "Die Klasse|spricht|[über Berufswünsche].", q: ["worüber"], f: "Worüber spricht die Klasse?" },
+    { s: "Sophie|bewirbt sich|[um eine Lehrstelle].", q: ["worum"], f: "Worum bewirbt sich Sophie?" },
+    { s: "Der Kunde|erkundigt sich|[nach den Öffnungszeiten].", q: ["wonach"], f: "Wonach erkundigt sich der Kunde?" },
+    { s: "Der Chef|verlässt sich|[auf Lena].", q: ["auf wen"], f: "Auf wen verlässt sich der Chef?" },
+    { s: "Tobias|beschäftigt sich|[mit Computern].", q: ["womit"], f: "Womit beschäftigt sich Tobias?" },
+    { s: "Viele Jugendliche|haben|Angst|[vor der Prüfung].", q: ["wovor"], f: "Wovor haben viele Jugendliche Angst?" },
+    { s: "Mia|nimmt|[an einem Schnuppertag]|teil.", q: ["woran"], f: "Woran nimmt Mia teil?" },
+    { s: "Die Lehrerin|ärgert sich|[über den Lärm].", q: ["worüber"], f: "Worüber ärgert sich die Lehrerin?" },
+    { s: "Felix|entscheidet sich|[für eine Lehre].", q: ["wofür"], f: "Wofür entscheidet sich Felix?" },
+    { s: "Die Oma|bedankt sich|[für die Hilfe].", q: ["wofür"], f: "Wofür bedankt sich die Oma?" },
+    { s: "Ich|erinnere mich|[an meinen ersten Arbeitstag].", q: ["woran"], f: "Woran erinnere ich mich?" },
+    { s: "Die Mutter|sorgt sich|[um ihren Sohn].", q: ["um wen"], f: "Um wen sorgt sich die Mutter?" }
+  ]
+};
+const ARTNAME = {
+  temp: "Adverbiale der Zeit (temporal)",
+  lok: "Adverbiale des Ortes (lokal)",
+  mod: "Adverbiale der Art und Weise (modal)",
+  kaus: "Adverbiale des Grundes (kausal)",
+  po: "Präpositionalobjekt"
+};
+/* Runde 1: Beispiele vom Arbeitsblatt + Gegenüberstellung „warten auf / warten an“ */
+const RUNDE1 = [["temp", 0], ["po", 0], ["lok", 0], ["mod", 0], ["kaus", 0], ["po", 1], ["lok", 1], ["temp", 3]];
+const ANZAHL = 8;
+
+/* ---------- Runden ---------- */
+function zufall(seed) {
+  let t = seed >>> 0;
+  return () => { t += 0x6D2B79F5; let r = Math.imul(t ^ (t >>> 15), 1 | t); r ^= r + Math.imul(r ^ (r >>> 7), 61 | r); return ((r ^ (r >>> 14)) >>> 0) / 4294967296; };
+}
+function mischen(l, R) { const a = [...l]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+/* Ab Runde 2: aus jedem Topf der Reihe nach, damit sich Sätze möglichst spät wiederholen.
+   Pro Runde: 2 Präpositionalobjekte, je 1 Zeit/Ort/Art/Grund und 2 weitere Adverbiale. */
+function erzeugeRunde(seed, runde) {
+  if (runde === 1) return RUNDE1.map(([t, i]) => satzObjekt(t, i));
+  const R0 = zufall(seed * 7 + 3);
+  const reihen = {}; for (const t in SAETZE) reihen[t] = mischen(SAETZE[t].map((_, i) => i), R0);
+  const R = zufall(seed * 1000 + runde);
+  const extra = [["temp", "lok"], ["mod", "kaus"], ["lok", "kaus"], ["temp", "mod"], ["lok", "mod"], ["temp", "kaus"]][(runde - 2) % 6];
+  const plan = ["po", "po", "temp", "lok", "mod", "kaus", ...extra];
+  const zaehler = {}; plan.forEach(t => zaehler[t] = (zaehler[t] || 0) + 1);
+  const liste = [];
+  for (const t in zaehler) {
+    const n = zaehler[t], start = (runde - 2) * n;
+    for (let k = 0; k < n; k++) liste.push(satzObjekt(t, reihen[t][(start + k) % reihen[t].length]));
+  }
+  return mischen(liste, R);
+}
+function satzObjekt(t, i) {
+  const d = SAETZE[t][i];
+  const teile = d.s.replace(/\.$/, "").split("|").map(x => ({ text: x.replace(/[\[\]]/g, ""), ziel: x.includes("[") }));
+  return { t, i, teile, q: d.q, f: d.f };
+}
+
+/* ---------- Zustand ---------- */
+const SPEICHER = "satzglieder-adverbiale-v1";
+const neu1 = () => ({ schritt: 1, f1: 0, f2: 0, f3: 0, falsch1: [], falsch3: [], frage: "", status: "offen" });
+let st = { name: "", seed: Math.floor(Math.random() * 65536), runde: 1, idx: 0, a: [] };
+let AUFGABEN = erzeugeRunde(st.seed, 1);
+st.a = AUFGABEN.map(neu1);
+function speichern() {
+  try { localStorage.setItem(SPEICHER, JSON.stringify(st)); } catch (e) {}
+  const cs = document.getElementById("code-show"); if (cs && st.name && !document.getElementById("code-box").hidden) cs.textContent = macheCode();
+}
+function laden() {
+  try {
+    const d = JSON.parse(localStorage.getItem(SPEICHER) || "null");
+    if (d && d.name && Array.isArray(d.a) && d.a.length === ANZAHL) { st = d; AUFGABEN = erzeugeRunde(st.seed, st.runde); }
+  } catch (e) {}
+}
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+const norm = s => s.toLowerCase().replace(/[?!.,]/g, "").replace(/\s+/g, " ").trim();
+
+/* ---------- Speicher-Code ---------- */
+const ALPH = "23456789ABCDEFGHJKMNPQRSTUVWXYZ", AL = BigInt(ALPH.length), Bg = x => BigInt(x);
+const normName = n => n.trim().replace(/\s+/g, " ").toLowerCase();
+function nameHash(n) { let h = 2166136261; for (const ch of normName(n)) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619); } return (h >>> 0) % 1024; }
+function pruefZeichen(t) { let c = 0; for (let k = 0; k < t.length; k++) c = (c + (k + 1) * ALPH.indexOf(t[k])) % ALPH.length; return ALPH[c]; }
+const ZST = ["offen", "richtig", "fehler", "loesung"];
+function macheCode() {
+  const F = [], f = (v, r) => F.push([v, r]);
+  f(st.seed % 65536, 65536); f((st.runde - 1) % 100, 100); f(st.idx, ANZAHL);
+  st.a.forEach(x => f(ZST.indexOf(x.status) * 64 + Math.min(x.f1, 3) * 16 + Math.min(x.f2, 3) * 4 + Math.min(x.f3, 3), 256));
+  f(nameHash(st.name), 1024);
+  let N = 0n; for (let k = F.length - 1; k >= 0; k--) N = N * Bg(F[k][1]) + Bg(F[k][0]);
+  let t = ""; do { t = ALPH[Number(N % AL)] + t; N /= AL; } while (N > 0n);
+  t += pruefZeichen(t);
+  return t.match(/.{1,4}/g).join("-");
+}
+function leseCode(str) {
+  const bad = { err: "Dieser Code ist ungültig. Kontrolliere, ob du ihn richtig abgeschrieben hast." };
+  const t = str.toUpperCase().replace(/[\s\-–—_.]/g, "");
+  if (t.length < 3 || [...t].some(ch => !ALPH.includes(ch))) return bad;
+  const body = t.slice(0, -1);
+  if (pruefZeichen(body) !== t.slice(-1)) return { err: "Im Code ist ein Tippfehler. Kontrolliere ihn Zeichen für Zeichen." };
+  let N = 0n; for (const ch of body) N = N * AL + Bg(ALPH.indexOf(ch));
+  const g = r => { const v = Number(N % Bg(r)); N /= Bg(r); return v; };
+  const seed = g(65536), runde = g(100) + 1, idx = g(ANZAHL), s = [];
+  for (let k = 0; k < ANZAHL; k++) { const v = g(256); s.push({ s: v >> 6, f: [(v >> 4) & 3, (v >> 2) & 3, v & 3] }); }
+  const nh = g(1024);
+  if (N !== 0n) return bad;
+  return { seed, runde, idx, s, nh };
+}
+function codeAnwenden(c) {
+  st.seed = c.seed; st.runde = c.runde; st.idx = c.idx;
+  AUFGABEN = erzeugeRunde(st.seed, st.runde);
+  st.a = c.s.map(x => { const z0 = neu1(); [z0.f1, z0.f2, z0.f3] = x.f; z0.status = ZST[x.s]; if (z0.status !== "offen") z0.schritt = 4; return z0; });
+}
+$("code-btn").addEventListener("click", () => {
+  const box = $("code-box"), auf = box.hidden;
+  $("code-show").textContent = macheCode();
+  box.hidden = !auf; $("code-btn").setAttribute("aria-expanded", auf ? "true" : "false");
+});
+$("code-copy").addEventListener("click", () => {
+  const b = $("code-copy");
+  try { navigator.clipboard.writeText($("code-show").textContent).then(() => { b.textContent = "Kopiert ✓"; setTimeout(() => { b.textContent = "Kopieren"; }, 1500); }, () => {}); } catch (e) {}
+});
+
+/* ---------- Start ---------- */
+function starten() { $("start").hidden = true; $("aufgaben").hidden = false; $("who").textContent = "Name: " + st.name; zeige(); }
+$("start-btn").addEventListener("click", () => {
+  const n = $("name-in").value.trim().replace(/\s+/g, " ");
+  if (n.length < 3 || !n.includes(" ")) { $("name-hinweis").textContent = "Bitte gib deinen Vor- und Nachnamen ein."; $("name-in").focus(); return; }
+  const codeText = $("code-in").value.trim();
+  if (codeText) {
+    const c = leseCode(codeText);
+    if (c.err) { $("code-frage").open = true; $("name-hinweis").textContent = c.err; $("code-in").focus(); return; }
+    if (c.nh !== nameHash(n)) { $("name-hinweis").textContent = "Dieser Code gehört zu einem anderen Namen. Schreib deinen Namen genau so wie auf dem anderen Gerät."; $("name-in").focus(); return; }
+    codeAnwenden(c);
+  }
+  st.name = n; speichern(); starten();
+  if (codeText) melde("ok", "Dein Fortschritt vom anderen Gerät wurde übernommen.");
+});
+["name-in", "code-in"].forEach(id => $(id).addEventListener("keydown", e => { if (e.key === "Enter") $("start-btn").click(); }));
+
+/* ---------- Anzeige ---------- */
+function melde(art, text) { const m = $("meldung"); m.className = "meldung " + art; m.innerHTML = text; }
+function leereMeldung() { const m = $("meldung"); m.className = "meldung"; m.innerHTML = ""; }
+function navZeichnen() {
+  $("nav").innerHTML = AUFGABEN.map((_, i) => {
+    const s = st.a[i].status;
+    return `<button type="button" class="${i === st.idx ? "cur " : ""}${s !== "offen" ? "s-" + s : ""}" data-i="${i}" aria-label="Satz ${i + 1}">${i + 1}</button>`;
+  }).join("");
+  $("progress").textContent = `Runde ${st.runde} · ${st.a.filter(x => x.status !== "offen").length} von ${AUFGABEN.length} fertig`;
+}
+const ARTEN_WAHL = ["temp", "lok", "mod", "kaus", "po"];
+const KURZ = { temp: "Temporal (Zeit)", lok: "Lokal (Ort)", mod: "Modal (Art und Weise)", kaus: "Kausal (Grund)", po: "Präpositionalobjekt" };
+function ergebnisHTML(b) {
+  const ziel = b.teile.find(x => x.ziel).text;
+  return `<div class="ergebnis"><div><b>${esc(ziel)}</b></div><div>Frage: ${esc(b.f)}</div><div>→ ${ARTNAME[b.t]}</div></div>`;
+}
+function zeige() {
+  const i = st.idx, b = AUFGABEN[i], z0 = st.a[i], fertig = z0.status !== "offen";
+  $("titel").textContent = `Satz ${i + 1}`;
+  $("satz").innerHTML = b.teile.map((x, k) => {
+    let kl = "sg";
+    if (z0.schritt > 1 && x.ziel) kl += " ziel";
+    else if (z0.falsch1.includes(k)) kl += " falsch";
+    else if (z0.schritt > 1) kl += " still";
+    return `<button type="button" class="${kl}" data-k="${k}"${z0.schritt > 1 ? " disabled" : ""}>${esc(x.text)}</button>`;
+  }).join("") + `<span>.</span>`;
+  $("s2").classList.toggle("aus", z0.schritt < 2);
+  const fr = $("frage");
+  fr.value = z0.schritt > 2 ? (z0.frageRichtig || b.q[0].replace(/^./, c => c.toUpperCase())) : z0.frage;
+  fr.disabled = z0.schritt !== 2; $("frage-btn").disabled = z0.schritt !== 2;
+  $("frage-ganz").innerHTML = z0.schritt > 2 ? `Ganze Frage: <b>${esc(b.f)}</b>` : "";
+  $("s3").classList.toggle("aus", z0.schritt < 3);
+  $("w3").innerHTML = ARTEN_WAHL.map(t => {
+    const kl = z0.schritt > 3 && t === b.t ? "ok" : z0.falsch3.includes(t) ? "falsch" : "";
+    return `<button type="button" class="${kl}" data-t="${t}"${z0.schritt !== 3 || z0.falsch3.includes(t) ? " disabled" : ""}>${KURZ[t]}</button>`;
+  }).join("");
+  $("zurueck").disabled = i === 0; $("vor").disabled = i === AUFGABEN.length - 1;
+  if (fertig) melde(z0.status === "loesung" ? "bad" : "ok", (z0.status === "loesung" ? "Lösung angesehen:" : "✔ Richtig!") + ergebnisHTML(b));
+  $("merke-hinweis").hidden = !(i === 0 && fertig);
+  navZeichnen();
+  if (z0.schritt === 2) fr.focus({ preventScroll: true });
+}
+
+/* ---------- Schritt 1: erkennen ---------- */
+$("satz").addEventListener("click", e => {
+  const btn = e.target.closest(".sg"); if (!btn) return;
+  const b = AUFGABEN[st.idx], z0 = st.a[st.idx], k = +btn.dataset.k;
+  if (z0.schritt !== 1) return;
+  if (b.teile[k].ziel) { z0.schritt = 2; speichern(); zeige(); melde("ok", "✔ Richtig gefunden! Jetzt frag danach."); return; }
+  z0.f1++; z0.falsch1.push(k); speichern(); zeige();
+  melde("warn", "Das ist keine adverbiale Bestimmung und kein Präpositionalobjekt. Tipp: Achte auf Angaben zu Zeit, Ort, Art und Weise oder Grund – oder auf eine Präposition, die fest zum Verb gehört." + loesungsKnopf(z0));
+});
+
+/* ---------- Schritt 2: fragen ---------- */
+const FRAGEN_ADV = { wann: "temp", "seit wann": "temp", "wie lange": "temp", "bis wann": "temp", wo: "lok", wohin: "lok", woher: "lok", wie: "mod", warum: "kaus", weshalb: "kaus", wieso: "kaus" };
+function fragePruefen() {
+  const b = AUFGABEN[st.idx], z0 = st.a[st.idx];
+  const a = norm($("frage").value);
+  if (!a) { melde("warn", "Tippe ein Fragewort an oder schreib es in das Feld."); return; }
+  if (b.q.includes(a)) {
+    z0.schritt = 3; z0.frageRichtig = $("frage").value.trim().replace(/\?$/, "") ; speichern(); zeige();
+    melde("ok", `✔ Richtig! ${esc(b.f)} Jetzt bestimme die Art.`); return;
+  }
+  z0.f2++; speichern();
+  let tipp = "Das Fragewort passt nicht. Probier, mit dem Fragewort einen ganzen Fragesatz zu bilden – die Antwort muss das grüne Satzglied sein.";
+  if (b.t === "po" && a in FRAGEN_ADV) tipp = "Hier gehört die Präposition fest zum Verb. Frag mit wo(r) + Präposition, z. B. Worauf? Wofür? Woran? – bei Personen: Auf wen? Um wen?";
+  else if (b.t !== "po" && !(a in FRAGEN_ADV)) tipp = "Dieses Satzglied ist eine Angabe zu Zeit, Ort, Art und Weise oder Grund. Probier es mit Wann? Wo? Wie? oder Warum?";
+  else if (b.t === "lok" && FRAGEN_ADV[a] === "lok") tipp = "Fast! Denk an die Richtung: Wo? (Ort), Wohin? (Ziel), Woher? (Herkunft).";
+  else if (b.t === "temp" && FRAGEN_ADV[a] === "temp") tipp = "Fast! Bei Zeitangaben gibt es mehrere Fragen: Wann? Seit wann? Wie lange?";
+  melde("warn", tipp + loesungsKnopf(z0));
+}
+$("frage-btn").addEventListener("click", fragePruefen);
+$("frage").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); fragePruefen(); } });
+$("frage").addEventListener("input", () => { st.a[st.idx].frage = $("frage").value; speichern(); });
+
+/* ---------- Schritt 3: bestimmen ---------- */
+$("w3").addEventListener("click", e => {
+  const btn = e.target.closest("button"); if (!btn) return;
+  const b = AUFGABEN[st.idx], z0 = st.a[st.idx], t = btn.dataset.t;
+  if (z0.schritt !== 3) return;
+  if (t === b.t) {
+    z0.schritt = 4; z0.status = (z0.f1 + z0.f2 + z0.f3) === 0 ? "richtig" : "fehler"; speichern(); zeige();
+    if (st.a.every(x => x.status !== "offen")) $("meldung").innerHTML += `<div style="margin-top:.6rem"><b>Alle ${ANZAHL} Sätze geschafft!</b> Klick auf „Auswertung anzeigen“ oder starte eine neue Runde.</div>`;
+    return;
+  }
+  z0.f3++; z0.falsch3.push(t); speichern(); zeige();
+  melde("warn", (t === "po" || b.t === "po"
+    ? "Schau auf dein Fragewort: Fragst du mit wo(r) + Präposition (Worauf? Wofür?), ist es ein Präpositionalobjekt. Bei Wann? Wo? Wie? Warum? ist es eine adverbiale Bestimmung."
+    : "Schau auf dein Fragewort: Wann → Zeit, Wo/Wohin/Woher → Ort, Wie → Art und Weise, Warum → Grund.") + loesungsKnopf(z0));
+});
+
+/* Lösung zeigen nach 2 Fehlversuchen im selben Satz */
+function loesungsKnopf(z0) {
+  return (z0.f1 + z0.f2 + z0.f3) >= 2 ? `<div style="margin-top:.5rem"><button type="button" class="mini2" id="loesung-btn">Lösung zeigen</button></div>` : "";
+}
+$("meldung").addEventListener("click", e => {
+  if (e.target.id !== "loesung-btn") return;
+  const z0 = st.a[st.idx]; z0.status = "loesung"; z0.schritt = 4; speichern(); zeige();
+});
+
+/* ---------- Navigation ---------- */
+function geheZu(i) { st.idx = Math.max(0, Math.min(AUFGABEN.length - 1, i)); speichern(); leereMeldung(); zeige(); $("karte").scrollIntoView({ block: "start", behavior: "smooth" }); }
+$("zurueck").addEventListener("click", () => geheZu(st.idx - 1));
+$("vor").addEventListener("click", () => geheZu(st.idx + 1));
+$("nav").addEventListener("click", e => { const b = e.target.closest("button"); if (b) geheZu(+b.dataset.i); });
+
+/* ---------- Auswertung ---------- */
+const STATUS = { richtig: "fehlerfrei", fehler: "mit Fehlversuchen gelöst", loesung: "Lösung angesehen", offen: "offen" };
+function auswerten() {
+  const n = s => st.a.filter(x => x.status === s).length, jetzt = new Date();
+  $("aw-kopf").innerHTML = `<b>${esc(st.name)}</b> · Runde ${st.runde} · ${jetzt.toLocaleDateString("de-AT")} um ${jetzt.toLocaleTimeString("de-AT", { hour: "2-digit", minute: "2-digit" })}`;
+  $("aw-zahlen").innerHTML = `<div><b>${n("richtig")}</b>fehlerfrei</div><div><b>${n("fehler")}</b>mit Fehlversuchen</div><div><b>${n("loesung")}</b>Lösung angesehen</div><div><b>${n("offen")}</b>noch offen</div>`;
+  $("aw-tab").innerHTML = AUFGABEN.map((b, i) => {
+    const s = st.a[i];
+    const satz = b.teile.map(x => x.ziel ? `<b>${esc(x.text)}</b>` : esc(x.text)).join(" ") + ".";
+    return `<tr><td>${i + 1}</td><td>${satz}</td><td>${esc(b.f)}<br>${ARTNAME[b.t]}</td>
+      <td>Erkennen: ${s.f1} · Fragen: ${s.f2} · Bestimmen: ${s.f3}</td>
+      <td><span class="badge ${s.status}">${STATUS[s.status]}</span></td></tr>`;
+  }).join("");
+  $("aufgaben").hidden = true; $("auswertung").hidden = false; window.scrollTo(0, 0);
+}
+$("zur-auswertung").addEventListener("click", auswerten);
+$("aw-zurueck").addEventListener("click", () => { $("auswertung").hidden = true; $("aufgaben").hidden = false; zeige(); });
+$("aw-druck").addEventListener("click", () => window.print());
+function neueRunde() {
+  if (st.a.some(x => x.status === "offen") && !confirm("Neue Runde starten? Alle Sätze werden durch neue ersetzt, offene Sätze gehen verloren.")) return;
+  st.runde++; AUFGABEN = erzeugeRunde(st.seed, st.runde); st.a = AUFGABEN.map(neu1); st.idx = 0; speichern();
+  $("auswertung").hidden = true; $("aufgaben").hidden = false; leereMeldung(); zeige(); window.scrollTo(0, 0);
+}
+document.querySelectorAll(".neue-runde").forEach(b => b.addEventListener("click", neueRunde));
+
+/* ---------- Bildschirm-Tastatur mit Fragewörtern ---------- */
+(function () {
+  const WOERTER = ["Wann", "Seit wann", "Wie lange", "Wo", "Wohin", "Woher", "Wie", "Warum",
+    "Wofür", "Worauf", "Woran", "Worüber", "Worum", "Wovon", "Womit", "Wonach", "Wovor", "Auf wen", "Um wen", "Für wen"];
+  const pad = $("pad"), sysBtn = $("padSys");
+  $("padkeys").innerHTML = WOERTER.map(w => `<button type="button" data-wort="${w}">${w}</button>`).join("") +
+    `<button type="button" class="op" data-act="del" aria-label="Löschen">⌫</button><button type="button" class="op" data-act="clr" aria-label="Feld leeren">C</button>` +
+    `<button type="button" class="go" data-act="ok" style="grid-column:span 2">✓ fertig</button>`;
+  const touch = window.matchMedia && matchMedia("(pointer: coarse)").matches;
+  let padOnly = touch, closed = false, cur = null;
+  try { const v = localStorage.getItem("padOnly"); if (v !== null) padOnly = v === "1"; } catch (e) {}
+  function modus() {
+    document.querySelectorAll("input.pin").forEach(i => padOnly ? i.setAttribute("inputmode", "none") : i.removeAttribute("inputmode"));
+    sysBtn.textContent = padOnly ? "Handy-Tastatur einblenden" : "Handy-Tastatur ausblenden";
+  }
+  modus();
+  function zeigen(inp) {
+    cur = inp; if (closed) return;
+    pad.hidden = false; document.body.classList.add("padon");
+    const r = inp.getBoundingClientRect();
+    if (r.bottom > window.innerHeight - pad.offsetHeight - 10) inp.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+  function weg() { pad.hidden = true; document.body.classList.remove("padon"); }
+  document.addEventListener("focusin", e => { const t = e.target; if (t.matches && t.matches("input.pin") && !t.disabled) zeigen(t); });
+  document.addEventListener("focusout", () => setTimeout(() => { const a = document.activeElement; if (!(a && a.matches && a.matches("input.pin"))) weg(); }, 150));
+  const feuern = () => cur.dispatchEvent(new Event("input", { bubbles: true }));
+  /* nur pointerdown/mousedown abfangen – nie touchstart, sonst gehen die Tasten am Handy nicht */
+  pad.addEventListener("pointerdown", e => { if (e.target.closest("button")) e.preventDefault(); });
+  pad.addEventListener("mousedown", e => { if (e.target.closest("button")) e.preventDefault(); });
+  pad.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.id === "padHide") { closed = true; weg(); return; }
+    if (b.id === "padSys") {
+      padOnly = !padOnly;
+      try { localStorage.setItem("padOnly", padOnly ? "1" : "0"); } catch (x) {}
+      modus(); if (cur) { cur.blur(); setTimeout(() => cur.focus(), 60); } return;
+    }
+    if (!cur || cur.disabled) return;
+    if (b.dataset.wort) { cur.value = b.dataset.wort; feuern(); }
+    else if (b.dataset.act === "clr") { cur.value = ""; feuern(); }
+    else if (b.dataset.act === "del") { cur.value = cur.value.slice(0, -1); feuern(); }
+    else if (b.dataset.act === "ok") { cur.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true })); }
+    if (cur && !cur.disabled) cur.focus({ preventScroll: true });
+  });
+})();
+
+/* ---------- Los ---------- */
+laden();
+if (st.name) starten();
+</script>
+</body>
+</html>
