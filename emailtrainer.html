@@ -138,7 +138,7 @@ const TASKS=[
 /* ===================== PRÜFREGELN ===================== */
 const IRR_PAST='went|saw|came|got|took|had|made|ate|bought|was|were|found|lost|left|met|thought|told|wrote|sang|swam|drank|drove|flew|gave|knew|ran|sat|slept|spoke|stood|won|heard|felt|caught|taught|brought|sent|spent|said|fell|broke|chose|woke|wore|became|began';
 const LINKERS=['because','while','when','before','after','until','by the time','but','so','although','even though','first','then','after that','finally','suddenly','unfortunately','luckily','in the end','during','all in all','however'];
-const GOOD=['amazing','brilliant','fantastic','exciting','wonderful','awesome','awful','terrible','boring','extremely','really','pretty','coincidence','turned out','recommend','definitely','in my opinion','unfortunately','luckily','all in all','set off','got lost','looking forward','what a','couldn’t believe','could not believe','the best thing','the only thing','by the time','experience','journey','surprised','disappointed','incredible','delicious','beautiful','lovely','enormous','crowded'];
+const GOOD=['amazing','brilliant','fantastic','exciting','wonderful','awesome','awful','terrible','boring','extremely','really','pretty','coincidence','turned out','recommend','definitely','in my opinion','unfortunately','luckily','all in all','set off','got lost','looking forward','what a coincidence','what a surprise','couldn’t believe','could not believe','the best thing','the only thing','by the time','experience','journey','surprised','disappointed','incredible','delicious','beautiful','lovely','enormous','crowded'];
 const OVER=['nice','good','bad','very','then','great'];
 const SPELL={befor:'before',becaus:'because',becouse:'because',realy:'really',wich:'which',verry:'very',beautifull:'beautiful',freind:'friend',frend:'friend',tommorow:'tomorrow',tomorow:'tomorrow',untill:'until',writting:'writing',whith:'with',allways:'always',finaly:'finally',suddently:'suddenly',sudenly:'suddenly',wonderfull:'wonderful',intresting:'interesting',hollidays:'holidays',holyday:'holiday',familiy:'family',togehter:'together',toghether:'together',thats:'that’s',dont:'don’t',didnt:'didn’t',cant:'can’t',im:'I’m',waching:'watching',missening:'missing',shure:'sure',buisness:'business',woud:'would',beatiful:'beautiful',restaurent:'restaurant',coincidance:'coincidence',coincedence:'coincidence',recomend:'recommend',reccomend:'recommend',definately:'definitely',definitly:'definitely',exited:'excited'};
 const CAPS=['monday','tuesday','wednesday','thursday','friday','saturday','sunday','january','february','march','april','june','july','august','september','october','november','december','christmas','easter','english','german','austria','vienna','london','italy','croatia','salzburg','england','france','spain','europe'];
@@ -178,6 +178,20 @@ function checkText(text,{isGreeting,isSign}={}){
   const m3=low.match(/\b(he|she|it|my (?:mum|dad|sister|brother|friend|teacher))\s+(like|go|play|want|need|have|live|love|watch|work|know|think)\b/);
   if(m3){const pre=low.slice(0,m3.index).trim().split(/\s+/).pop();if(!/^(did|does|didn't|doesn't|can|could|will|would|should|must|to|and|let|make|not|might)$/.test(pre||'')&&!/\b(yesterday|last|ago)\b/.test(low))add('warn','Zeiten',`he/she/it im Present simple braucht ein <b>-s</b>: <i>${m3[1]} ${m3[2]==='have'?'has':m3[2]==='go'?'goes':m3[2]==='watch'?'watches':m3[2]+'s'}</i>.`,q);}
   if(/\ba\s+(?!uni|use|euro|one|u[sr])[aeiou]\w+/i.test(s))add('warn','Ausdruck','Vor einem Vokal steht meist <b>an</b>: <i>an apple, an amazing day</i>.',q);
+  {const re=/\b(i|we|he|she|they|it|you|there)\s+(was|were|is|are|am|saw|went|had|thought|think|did|got|took|ate|played|visited|walked|liked|loved|found|met|bought|stayed|flew|travelled|traveled)\b/g;const ms=[...low.matchAll(re)];
+   for(let k=1;k<ms.length;k++){const a=ms[k-1],b=ms[k];if(/^(thought|think|said|knew|hoped|believed)$/.test(a[2])&&b.index-a.index-a[0].length<3)continue;const between=low.slice(a.index+a[0].length,b.index);
+    if(!/[,;:\-–—]|\b(and|but|because|so|when|while|that|which|who|or|before|after|until|if|as|than|where|although|though)\b/.test(between)){const tail=s.slice(b.index,b.index+18);add('bad','Satzzeichen',`Hier beginnen zwei Sätze ohne Punkt. Setz vor „<b>${esc(tail.trim().split(/\s+/).slice(0,2).join(' '))}</b>“ einen Punkt – oder verbinde mit <i>and / because / so</i>.`,q);break;}}}
+  if(/\b(by|the|a|on|in|off|our|my|that|this)\s+plain\b(?!\s+(t-shirt|shirt|colour|color|white|black|food|water))/.test(low))add('bad','Rechtschreibung','Flugzeug = <b>plane</b> (plain heißt „einfach, schlicht“).',q);
+  if(/\btheir\s+(is|are|was|were)\b/.test(low))add('bad','Rechtschreibung','„dort / es gibt“ = <b>there</b> (<i>there is, there was</i>). <i>their</i> = ihr/ihre.',q);
+  if(/\b(bigger|smaller|better|worse|older|younger|more|less|faster|longer|shorter|higher|cheaper|easier|nicer)\s+then\b/.test(low))add('bad','Rechtschreibung','Beim Vergleich: <b>than</b> (<i>bigger than</i>), nicht „then“.',q);
+  if(/\bwhere\s+(happy|tired|sad|there|very|so|really|at|in|on)\b/.test(low)&&!/^where\b/.test(low))add('warn','Rechtschreibung','„waren“ = <b>were</b>, „wo“ = <b>where</b>.',q);
+  if(/\b(was|were|are|is|am)\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s+(hours?|minutes?|days?)\s+(in|on)\b/.test(low))add('bad','Ausdruck','Dauer auf Englisch: <b>The flight took two hours.</b> / <b>It took us two hours to get there.</b> („we were 2 hours in the plane“ ist deutsch gedacht.)',q);
+  if(/\b(walked|played|went|visited|ate|saw|swam|read|watched|did|do|go|play|eat|watch)\s+(every day|every morning|every evening|yesterday|last \w+|on (monday|tuesday|wednesday|thursday|friday|saturday|sunday))\s+(a|an|the|my|our|lots|a lot|some|to|in)\b/.test(low))add('bad','Satzbau','Die Zeitangabe steht <b>am Satzende oder am Anfang</b>: <i>We walked a lot <b>every day</b>.</i> / <i><b>Every day</b> we walked …</i>',q);
+  if(/\bi hoped\s+(that\s+)?(you|your)\b/.test(low))add('warn','Zeiten','Du hoffst es <b>jetzt</b>: <i>I <b>hope</b> your holidays were great.</i>',q);
+  if(/^i had to tell you\b/.test(low))add('warn','Zeiten','Du willst es <b>jetzt</b> erzählen: <i>I <b>have</b> to tell you … / I <b>want</b> to tell you …</i>',q);
+  if(/^and\s/.test(low))add('warn','Satzbau','Einen Satz besser nicht mit <b>And</b> beginnen – hänge ihn an den Satz davor an.',q);
+  {const PL=['Barcelona','Vienna','London','Salzburg','Croatia','Italy','Spain','Paris','Rome','Venice','Graz','Linz','Innsbruck','Austria','Germany','Greece','Scotland','Edinburgh','Munich','Berlin','Prague','Budapest','Carinthia','Tyrol','Styria','Madrid','Lisbon','Portugal','Florence','Milan','Naples','Amsterdam','Brussels','Copenhagen','Dublin','Ireland','Norway','Sweden','Denmark','Switzerland','Zurich','Geneva','Hungary','Slovenia','Ljubljana','Turkey','Egypt','America','Canada','Australia','Mallorca','Majorca','Sicily','Sardinia','Corsica','Crete','Rhodes','Tenerife','Christmas','Easter','English','Halloween'];
+   (s.match(/\b[A-ZÄÖÜ][a-zäöü]{3,}\b/g)||[]).forEach(cw=>{if(PL.includes(cw))return;const lw=cw.toLowerCase();if(DICT.has(lw))return;const hit=PL.find(x=>lev(lw,x.toLowerCase(),2)<=2&&Math.abs(x.length-cw.length)<=2);if(hit)add('warn','Rechtschreibung',`Meintest du <b>${hit}</b>? (du hast „${esc(cw)}“ geschrieben)`,q);});}
   const w=low.split(/\s+/);if(w.length>30)add('warn','Satzbau','Sehr langer Satz – teile ihn in zwei Sätze.',q);
   const raw=s.split(/\s+/);raw.forEach((rw,ri)=>{const core=rw.replace(/^[^A-Za-zÄÖÜäöüß']+|[^A-Za-zÄÖÜäöüß']+$/g,'').replace(/[’]/g,"'");if(!core)return;if(/^[A-ZÄÖÜ]/.test(core)&&ri>0)return;const lw=core.toLowerCase();if(SPELL[lw.replace(/'/g,'')])return;const parts=lw.split("'");const main=parts[0];const sufOk=parts.slice(1).every(p=>['t','s','re','ve','ll','d','m',''].includes(p));if(/[äöüß]/.test(main)){add('bad','Rechtschreibung',`„${esc(core)}“ ist kein englisches Wort.`,q);return;}if(!/^[a-z]+$/.test(main)||main.length<2)return;if(!known(main)||!sufOk){if(parts.length>1&&known(main)&&!sufOk)return;const sg=suggest(main);add('warn','Rechtschreibung',`Unbekanntes Wort „<b>${esc(core)}</b>“ – Tippfehler?${sg.length?' Meintest du: <b>'+sg.join('</b>, <b>')+'</b>?':''}${ri===0&&/^[A-Z]/.test(core)?' (Falls es ein Name ist, passt es.)':''}`,q);}});
   w.forEach(x=>{const c=x.replace(/[^a-zäöü']/g,'');if(SPELL[c])add('warn','Rechtschreibung',`Schreibweise: <b>${SPELL[c]}</b> (nicht „${c}“).`,q);if(CAPS.includes(c)&&new RegExp('\\b'+c+'\\b').test(s))add('warn','Großschreibung',`<b>${c[0].toUpperCase()+c.slice(1)}</b> schreibt man groß.`,q);});
@@ -189,21 +203,30 @@ function checkText(text,{isGreeting,isSign}={}){
  if(/\b(was|were)\s+\w+ing\b/.test(low))add('ok','Zeiten','Past progressive verwendet (<i>was/were …-ing</i>) – super für den Hintergrund einer Geschichte.');
  const gd=GOOD.filter(g=>low.replace(/'/g,'’').includes(g));if(gd.length)add('ok','Wortschatz','Starke Wörter: '+gd.map(x=>'<b>'+x+'</b>').join(', '));
  return out;}
+function checkWhole(text){const out=[];const low=text.toLowerCase().replace(/[’]/g,"'");
+ const tr=[...new Set((low.match(/\b(last (week|weekend|summer|winter|spring|autumn|year|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday|easter|christmas)|yesterday|(two|three|a few) (days|weeks|months|years) ago|this (summer|winter|morning|week))\b/g)||[]))];
+ if(tr.length>=2)out.push({lvl:'warn',cat:'Unstimmigkeit',msg:`Du nennst verschiedene Zeitpunkte: ${tr.map(x=>'<b>'+x+'</b>').join(' und ')}. Passt das zusammen? Bei <i>einer</i> Reise oder <i>einem</i> Erlebnis nur einen Zeitpunkt verwenden.`});
+ const OV=[['cool',2],['wonderful',2],['nice',2],['a lot of',3],['good',3],['very',3],['then',3],['great',3],['really',3],['funny',2]];
+ OV.forEach(([w,n])=>{const c=(low.match(new RegExp('\\b'+w+'\\b','g'))||[]).length;if(c>=n)out.push({lvl:'warn',cat:'Wiederholung',msg:`<b>${w}</b> kommt ${c}× vor. Abwechseln: amazing, fantastic, brilliant, lots of, extremely …`});});
+ const STOP=new Set('i we you he she it they a an the and but so to of in on at for with my our your is was were are it\'s that this there very a lot thought think went had saw did got really have has me us them when then'.split(' '));
+ const ws=(low.match(/[a-z']+/g)||[]);const seen={};const rep=new Set();for(let i=0;i+2<ws.length;i++){const g=ws.slice(i,i+3);if(g.filter(x=>!STOP.has(x)&&x.length>3).length<1)continue;if(g.filter(x=>STOP.has(x)).length>1&&g.filter(x=>!STOP.has(x)&&x.length>4).length<1)continue;if(g.every(x=>STOP.has(x)))continue;const k=g.join(' ');if(seen[k]!==undefined&&i-seen[k]>3)rep.add(k);else if(seen[k]===undefined)seen[k]=i;}
+ [...rep].slice(0,2).forEach(k=>out.push({lvl:'warn',cat:'Wiederholung',msg:`„<b>${k}</b>“ steht zweimal im Text. Sagst du dasselbe doppelt? Dann einen Satz streichen.`}));
+ return out;}
 function analyseAll(text){const low=text.toLowerCase();const linkers=LINKERS.filter(l=>new RegExp('\\b'+l.replace(/ /g,'\\s+')+'\\b').test(low));
  const good=GOOD.filter(g=>low.replace(/'/g,'’').includes(g));const over=OVER.filter(o=>(low.match(new RegExp('\\b'+o+'\\b','g'))||[]).length>=3);return {linkers,good,over};}
 const wc=t=>(t.trim().match(/[A-Za-zÄÖÜäöü0-9’'-]+/g)||[]).length;
 
 /* ===================== ZUSTAND ===================== */
 const KEY='email-trainer-v1';
-let S={name:'',level:1,hist:[],cur:null};
+let S={name:'',level:1,hist:[],cur:null,help:true};
 try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r));}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}};
 const $=s=>document.querySelector(s);const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const app=$('#app');
 function ask(msg,yes='OK',no='Abbrechen'){return new Promise(res=>{const d=document.createElement('div');d.className='modal';d.innerHTML=`<div class="mbox" role="dialog" aria-modal="true"><p>${msg}</p><div class="row"><button class="btn" data-y>${yes}</button><button class="btn s" data-n>${no}</button></div></div>`;document.body.appendChild(d);const done=v=>{d.remove();res(v);};d.querySelector('[data-y]').onclick=()=>done(true);d.querySelector('[data-n]').onclick=()=>done(false);d.querySelector('[data-y]').focus();});}
 function hash(s){let h=7;for(const c of s.toLowerCase().trim())h=(h*31+c.charCodeAt(0))%1679616;return h.toString(36).padStart(4,'0');}
-function code(){const p={n:S.name,l:S.level,h:S.hist.map(x=>[x.t,x.s,x.d,x.c])};return 'EM-'+hash(S.name)+'-'+btoa(unescape(encodeURIComponent(JSON.stringify(p))));}
-function restore(c,name){try{const [,hs,b]=c.trim().match(/^EM-(\w{4})-(.+)$/);if(hs!==hash(name))return 'Der Code gehört zu einem anderen Namen.';const p=JSON.parse(decodeURIComponent(escape(atob(b))));if(p.n.trim().toLowerCase()!==name.trim().toLowerCase())return 'Der Code gehört zu einem anderen Namen.';S={name:p.n,level:p.l,hist:p.h.map(x=>({t:x[0],s:x[1],d:x[2],c:x[3]})),cur:null};save();return '';}catch(e){return 'Der Code ist ungültig.';}}
+function code(){const p={n:S.name,l:S.level,h:S.hist.map(x=>[x.t,x.s,x.d,x.c,x.l||0,x.x||'',x.hp])};return 'EM-'+hash(S.name)+'-'+btoa(unescape(encodeURIComponent(JSON.stringify(p))));}
+function restore(c,name){try{const [,hs,b]=c.trim().match(/^EM-(\w{4})-(.+)$/);if(hs!==hash(name))return 'Der Code gehört zu einem anderen Namen.';const p=JSON.parse(decodeURIComponent(escape(atob(b))));if(p.n.trim().toLowerCase()!==name.trim().toLowerCase())return 'Der Code gehört zu einem anderen Namen.';S={name:p.n,level:p.l,hist:p.h.map(x=>({t:x[0],s:x[1],d:x[2],c:x[3],l:x[4]||undefined,x:x[5]||'',hp:x[6]})),cur:null};save();return '';}catch(e){return 'Der Code ist ungültig.';}}
 
 /* ===================== ANSICHTEN ===================== */
 const LEVELS={1:'Stufe 1 – mit Satzanfängen und Beispielsätzen',2:'Stufe 2 – nur mit Satzanfängen',3:'Stufe 3 – frei schreiben wie bei der Schularbeit'};
@@ -233,36 +256,45 @@ function chart(){if(S.hist.length<2)return '';const h=S.hist.slice(-12);const W=
 function viewHome(){S.cur=null;save();const doneIds=new Set(S.hist.map(h=>h.t));const best=S.hist.length?Math.max(...S.hist.map(h=>h.s)):0;
  app.innerHTML=`${header()}<h2>Neue Runde – wähle eine Aufgabe</h2>${focusTips()}
  <div class="tasks">${TASKS.map(t=>`<button class="task" data-t="${t.id}">${doneIds.has(t.id)?'<span class="done">✓ geschrieben</span>':''}<b>${esc(t.title)}</b><small>${esc(t.de)} · ${t.words[0]}–${t.words[1]} Wörter</small></button>`).join('')}</div>
+ <div class="card" style="margin-top:12px"><h3>Hilfe beim Schreiben</h3><div class="row"><button class="btn ${S.help?'':'s'}" id="hOn" aria-pressed="${S.help}">Mit Satzanfängen</button><button class="btn ${S.help?'s':''}" id="hOff" aria-pressed="${!S.help}">Ohne Satzanfänge</button></div><p class="note" style="margin:8px 0 0">${S.help?'Du bekommst bei jedem Schritt Satzanfänge zum Antippen'+(S.level===1?' und Beispielsätze':'')+'.':'Du schreibst ganz selbstständig – wie bei der Schularbeit. Die Kontrolle bleibt eingeschaltet.'} Umschalten geht auch während des Schreibens.</p></div>
  <div class="row" style="margin:12px 0 18px"><button class="btn s" id="rnd">Zufällige Aufgabe</button><label class="note">Stufe: <select id="lv" style="font:inherit">${[1,2,3].map(i=>`<option value="${i}" ${i===S.level?'selected':''}>${i}</option>`).join('')}</select></label></div>
- ${S.hist.length?`<div class="card"><h3>Dein Fortschritt</h3><p class="note">${S.hist.length} E-Mail${S.hist.length>1?'s':''} geschrieben · Bestwert ${best} Punkte</p>${chart()}<div class="tablewrap"><table><tr><th>Datum</th><th>Aufgabe</th><th>Stufe</th><th>Punkte</th></tr>${S.hist.slice(-8).reverse().map(h=>`<tr><td>${new Date(h.d*864e5).toLocaleDateString('de-AT')}</td><td>${esc((TASKS.find(t=>t.id===h.t)||{}).title||h.t)}</td><td>${h.l||'–'}</td><td><b>${h.s}</b></td></tr>`).join('')}</table></div></div>`:''}
+ ${S.hist.length?`<div class="card"><h3>Dein Fortschritt</h3><p class="note">${S.hist.length} E-Mail${S.hist.length>1?'s':''} geschrieben · Bestwert ${best} Punkte</p>${chart()}<div class="tablewrap"><table><tr><th>Datum</th><th>Aufgabe</th><th>Stufe</th><th>Punkte</th><th></th></tr>${S.hist.map((h,i)=>[h,i]).reverse().map(([h,i])=>`<tr><td>${new Date(h.d*864e5).toLocaleDateString('de-AT')}</td><td>${esc((TASKS.find(t=>t.id===h.t)||{}).title||h.t)}</td><td>${h.l||'–'}${h.hp===0?'<br><small>ohne Hilfe</small>':h.hp===1?'<br><small>mit Hilfe</small>':''}</td><td><b>${h.s}</b></td><td>${h.x?`<button class="btn s sm old" data-i="${i}">Lesen</button>`:''}</td></tr>`).join('')}</table></div></div>`:''}
  ${merkbox()}
  <div class="card"><h3>Auf ein anderes Gerät mitnehmen</h3><p class="note">Diesen Speicher-Code kopieren und auf dem anderen Gerät mit deinem Namen eingeben.</p><textarea readonly id="code" style="min-height:60px;font-size:13px">${code()}</textarea><div class="row" style="margin-top:8px"><button class="btn s sm" id="cp">Code kopieren</button><button class="btn s sm" id="rst" style="margin-left:auto">Anderer Schüler? Alles löschen</button></div></div>`;
- app.querySelectorAll('.task').forEach(b=>b.onclick=()=>startTask(b.dataset.t));
+ app.querySelectorAll('.task').forEach(b=>b.onclick=()=>startTask(b.dataset.t));app.querySelectorAll('.old').forEach(b=>b.onclick=()=>viewOld(+b.dataset.i));
  $('#rnd').onclick=()=>{const open=TASKS.filter(t=>!doneIds.has(t.id));const pool=open.length?open:TASKS;startTask(pool[Math.floor(Math.random()*pool.length)].id);};
- $('#lv').onchange=e=>{S.level=+e.target.value;save();viewHome();};
+ $('#lv').onchange=e=>{S.level=+e.target.value;save();viewHome();};$('#hOn').onclick=()=>{S.help=true;save();viewHome();};$('#hOff').onclick=()=>{S.help=false;save();viewHome();};
  $('#cp').onclick=async()=>{try{await navigator.clipboard.writeText(code());$('#cp').textContent='Kopiert ✓';}catch(e){$('#code').select();}};
  $('#rst').onclick=async()=>{if(await ask('Wirklich alles löschen – Name und Fortschritt?','Ja, löschen','Nein')){S={name:'',level:1,hist:[],cur:null};save();viewStart();}};}
+function viewOld(i){const h=S.hist[i];const t=TASKS.find(x=>x.id===h.t)||{title:h.t,task:'',words:[0,0]};const text=h.x||'';const lines=text.trim().split('\n');
+ const body=lines.length>3?lines.slice(1,-2).join('\n'):text;const iss=[...checkText(body),...checkWhole(text)].filter(f=>f.lvl!=='ok');const n=wc(text);
+ app.innerHTML=`${header()}<h2>Alter Text: ${esc(t.title)}</h2><p class="note">${new Date(h.d*864e5).toLocaleDateString('de-AT')} · Stufe ${h.l||'–'} · <b>${h.s} Punkte</b> · ${n} Wörter (Ziel ${t.words[0]}–${t.words[1]})</p>
+ <div class="card"><p class="de">${esc(t.task)}</p><div class="preview">${esc(text)}</div><div class="row" style="margin-top:10px"><button class="btn s sm" id="cpy">Text kopieren</button></div></div>
+ <div class="card"><h3>Was du damals verbessern konntest</h3>${fbHTML(iss)||'<div class="f ok">✓ Keine Fehler gefunden.</div>'}<p class="note">Tipp: Schreib die Aufgabe noch einmal und vergleiche die Punkte.</p></div>
+ <div class="row"><button class="btn s" id="bk">Zurück</button><button class="btn" id="re">Diese Aufgabe nochmal schreiben</button></div>`;
+ $('#bk').onclick=()=>viewHome();$('#re').onclick=()=>startTask(h.t);
+ $('#cpy').onclick=async()=>{try{await navigator.clipboard.writeText(text);$('#cpy').textContent='Kopiert ✓';}catch(e){}};window.scrollTo({top:0});}
 function stepsOf(t){return [{k:'greet',...OPEN,isGreeting:true},{k:'intro',label:'Introduction',...t.intro},...t.points.map((p,i)=>({k:'p'+i,...p,point:true})),{k:'close',label:'Closing sentence',...t.close},{k:'sign',...CLOSE_SIGN,isSign:true}];}
-function startTask(id){S.cur={t:id,step:0,a:{},free:'',ticks:{},start:Date.now(),level:S.level};save();S.level===3?viewFree():viewStep();}
+function startTask(id){S.cur={t:id,step:0,a:{},free:'',ticks:{},start:Date.now(),level:S.level,help:S.help};save();S.level===3?viewFree():viewStep();}
 function keys(){return `<div class="keys" aria-label="Eingabehilfe">${['’',',','.','!','?','“','”','–','I'].map(k=>`<button class="chip" data-k="${k}">${k}</button>`).join('')}<button class="chip" data-k="\n">↵</button></div>`;}
 function insertAt(ta,txt){const s=ta.selectionStart??ta.value.length,e=ta.selectionEnd??ta.value.length;ta.value=ta.value.slice(0,s)+txt+ta.value.slice(e);const p=s+txt.length;ta.focus();ta.setSelectionRange(p,p);ta.dispatchEvent(new Event('input'));}
 function fbHTML(list){if(!list.length)return '';const ord={bad:0,warn:1,ok:2};return list.sort((a,b)=>ord[a.lvl]-ord[b.lvl]).map(f=>`<div class="f ${f.lvl}">${f.lvl==='bad'?'✗':f.lvl==='warn'?'!':'✓'} <b>${f.cat}:</b> ${f.msg}${f.q?` <span class="q">– „${esc(f.q)}“</span>`:''}</div>`).join('');}
 function viewStep(){const t=TASKS.find(x=>x.id===S.cur.t);const st=stepsOf(t);const i=S.cur.step;const s=st[i];const lvl=S.cur.level;
  app.innerHTML=`${header()}<h2>${esc(t.title)}</h2><p class="de">${esc(t.task)}</p>
  <div class="steps">${st.map((x,j)=>`<i class="${j<i?'ok':j===i?'on':''}"></i>`).join('')}</div>
- <div class="card"><span class="pill">Schritt ${i+1} von ${st.length}</span><h3 style="margin-top:8px">${s.point?'Point: ':''}${esc(s.label)}</h3><p class="de">${esc(s.de)}</p>
- ${lvl<=2?`<div class="note">Satzanfänge (antippen zum Einfügen):</div><div class="chips">${s.starters.map(x=>`<button class="chip st">${esc(x.replace(/\n/g,'↵ '))}</button>`).join('')}</div>`:''}
- ${lvl===1&&s.example?`<button class="btn s sm" id="ex">Beispielsatz zeigen</button><div class="example" id="exb">${esc(s.example).replace(/\n/g,'<br>')}</div>`:''}
+ <div class="card"><span class="pill">Schritt ${i+1} von ${st.length}</span><button class="btn s sm" id="hlp" style="float:right">${S.cur.help?'Satzanfänge ausblenden':'Satzanfänge einblenden'}</button><h3 style="margin-top:8px">${s.point?'Point: ':''}${esc(s.label)}</h3><p class="de">${esc(s.de)}</p>
+ ${S.cur.help&&lvl<=2?`<div class="note">Satzanfänge (antippen zum Einfügen):</div><div class="chips">${s.starters.map(x=>`<button class="chip st">${esc(x.replace(/\n/g,'↵ '))}</button>`).join('')}</div>`:''}
+ ${S.cur.help&&lvl===1&&s.example?`<button class="btn s sm" id="ex">Beispielsatz zeigen</button><div class="example" id="exb">${esc(s.example).replace(/\n/g,'<br>')}</div>`:''}
  <textarea id="ta" placeholder="${s.isGreeting?'Hi …,':s.isSign?'Love,\nDein Name':'Schreib 1–3 Sätze auf Englisch …'}"></textarea>${keys()}
  <div class="wc" id="wcs"></div><div class="fb" id="fb"></div>
  <div class="row" style="margin-top:12px">${i>0?'<button class="btn s" id="back">Zurück</button>':''}<button class="btn" id="next">${i===st.length-1?'Fertig – E-Mail ansehen':'Weiter'}</button><button class="btn s sm" id="quit" style="margin-left:auto">Abbrechen</button></div></div>
- <div class="card"><h3>Deine E-Mail bis jetzt</h3><div class="preview" id="pv"></div></div>${merkbox()}`;
+ <div class="card"><h3>Deine E-Mail bis jetzt</h3><div class="preview" id="pv"></div><div class="fb" id="wh"></div></div>${merkbox()}`;
  const ta=$('#ta');ta.value=S.cur.a[s.k]||'';
- const upd=()=>{S.cur.a[s.k]=ta.value;save();const f=checkText(ta.value,s);$('#fb').innerHTML=fbHTML(f);$('#wcs').textContent=s.isGreeting||s.isSign?'':`${wc(ta.value)} Wörter in diesem Schritt`;$('#pv').textContent=assemble(t)||'…';};
+ const upd=()=>{S.cur.a[s.k]=ta.value;save();const f=checkText(ta.value,s);$('#fb').innerHTML=fbHTML(f);$('#wcs').textContent=s.isGreeting||s.isSign?'':`${wc(ta.value)} Wörter in diesem Schritt`;$('#pv').textContent=assemble(t)||'…';$('#wh').innerHTML=fbHTML(checkWhole(assemble(t)));};
  let tm;ta.oninput=()=>{clearTimeout(tm);tm=setTimeout(upd,350);$('#pv').textContent=assemble(t)||'…';S.cur.a[s.k]=ta.value;};upd();
  app.querySelectorAll('.chip.st').forEach((b,j)=>b.onclick=()=>insertAt(ta,s.starters[j]));
  app.querySelectorAll('.keys .chip').forEach(b=>b.onclick=()=>insertAt(ta,b.dataset.k));
- if($('#ex'))$('#ex').onclick=()=>$('#exb').classList.toggle('show');
+ if($('#ex'))$('#ex').onclick=()=>$('#exb').classList.toggle('show');$('#hlp').onclick=()=>{S.cur.a[s.k]=ta.value;S.cur.help=!S.cur.help;S.help=S.cur.help;save();viewStep();};
  if($('#back'))$('#back').onclick=()=>{S.cur.step--;save();viewStep();};
  $('#quit').onclick=async()=>{if(await ask('Abbrechen? Diese E-Mail wird nicht gewertet.','Ja, abbrechen','Weiterschreiben'))viewHome();};
  $('#next').onclick=async()=>{upd();const f=checkText(ta.value,s);const bad=f.filter(x=>x.lvl==='bad').length;
@@ -275,17 +307,18 @@ function assemble(t){const a=S.cur.a;const body=[a.intro,...t.points.map((p,i)=>
 function viewFree(){const t=TASKS.find(x=>x.id===S.cur.t);
  app.innerHTML=`${header()}<h2>${esc(t.title)}</h2><div class="card"><p><b>${esc(t.task)}</b></p><p class="note">Hake jeden Punkt ab, sobald er in deiner E-Mail vorkommt:</p>
  <ul class="check">${t.points.map((p,i)=>`<li><label><input type="checkbox" data-i="${i}">${esc(p.label)}</label></li>`).join('')}</ul>
+ <div class="row"><button class="btn s sm" id="hlp">${S.cur.help?'Satzanfänge ausblenden':'Satzanfänge einblenden'}</button></div>${S.cur.help?`<div class="note" style="margin-top:6px">Satzanfänge (antippen zum Einfügen):</div><div class="chips">${[...t.intro.starters,...t.points.flatMap(p=>p.starters),...t.close.starters].map((x,j)=>`<button class="chip fst" data-j="${j}">${esc(x.trim())}</button>`).join('')}</div>`:''}
  <div class="row note"><span>Zeit: <span class="timer" id="tmr">0:00</span> (Ziel: höchstens 20 Minuten)</span></div>
  <textarea id="ta" style="min-height:260px" placeholder="Hi …,"></textarea>${keys()}<div class="wc" id="wcs"></div>
  <div class="row" style="margin-top:8px"><button class="btn s" id="chk">Text jetzt prüfen</button><button class="btn" id="done">Fertig – Auswertung</button><button class="btn s sm" id="quit" style="margin-left:auto">Abbrechen</button></div>
  <div class="fb" id="fb"></div></div>${merkbox()}`;
- const ta=$('#ta');ta.value=S.cur.free||'';const [lo,hi]=t.words;
+ const ta=$('#ta');ta.value=S.cur.free||'';const [lo,hi]=t.words;const allSt=[...t.intro.starters,...t.points.flatMap(p=>p.starters),...t.close.starters];app.querySelectorAll('.chip.fst').forEach(b=>b.onclick=()=>insertAt(ta,allSt[+b.dataset.j]));$('#hlp').onclick=()=>{S.cur.free=ta.value;S.cur.help=!S.cur.help;S.help=S.cur.help;save();viewFree();};
  const upd=()=>{S.cur.free=ta.value;save();const n=wc(ta.value);$('#wcs').textContent=`${n} Wörter (Ziel ${lo}–${hi})`;$('#wcs').classList.toggle('in',n>=lo&&n<=hi);};
  ta.oninput=upd;upd();
  app.querySelectorAll('[data-i]').forEach(c=>{c.checked=!!S.cur.ticks[c.dataset.i];c.onchange=()=>{S.cur.ticks[c.dataset.i]=c.checked;save();};});
  app.querySelectorAll('.keys .chip').forEach(b=>b.onclick=()=>insertAt(ta,b.dataset.k));
  const iv=setInterval(()=>{const el=$('#tmr');if(!el){clearInterval(iv);return;}const s=Math.floor((Date.now()-S.cur.start)/1000);el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');},1000);
- $('#chk').onclick=()=>{const lines=ta.value.split('\n');const first=lines[0]||'';const restT=lines.slice(1).join('\n');$('#fb').innerHTML=fbHTML([...checkText(first,{isGreeting:true}),...checkText(restT),...checkText(lines.slice(-2).join(' '),{isSign:true})]);};
+ $('#chk').onclick=()=>{const lines=ta.value.split('\n');const first=lines[0]||'';const restT=lines.slice(1).join('\n');$('#fb').innerHTML=fbHTML([...checkText(first,{isGreeting:true}),...checkText(restT),...checkText(lines.slice(-2).join(' '),{isSign:true}),...checkWhole(ta.value)]);};
  $('#quit').onclick=async()=>{if(await ask('Abbrechen? Diese E-Mail wird nicht gewertet.','Ja, abbrechen','Weiterschreiben'))viewHome();};
  $('#done').onclick=()=>viewResult();}
 function score(t,text){const lines=text.split('\n');let content,issues=[];
@@ -293,13 +326,13 @@ function score(t,text){const lines=text.split('\n');let content,issues=[];
   issues=[...checkText(lines[0]||'',{isGreeting:true}),...checkText(lines.slice(1).join('\n')),...checkText(lines.slice(-2).join(' '),{isSign:true})];}
  else{const a=S.cur.a;const st=stepsOf(t);const filled=st.filter(s=>s.point?wc(a[s.k]||'')>=5:(a[s.k]||'').trim()).length;content=Math.round(30*filled/st.length);
   st.forEach(s=>issues.push(...checkText(a[s.k]||'',s)));}
- const n=wc(text),[lo,hi]=t.words;const len=n>=lo&&n<=hi?10:(n>=lo*.85&&n<=hi*1.15?5:0);
+ issues.push(...checkWhole(text));const n=wc(text),[lo,hi]=t.words;const len=n>=lo&&n<=hi?10:(n>=lo*.85&&n<=hi*1.15?5:0);
  const bad=issues.filter(x=>x.lvl==='bad'),warn=issues.filter(x=>x.lvl==='warn');const lang=Math.max(0,30-6*bad.length-2*warn.length);
  const an=analyseAll(text);const link=[0,5,10,15][Math.min(3,an.linkers.length)];const voc=Math.max(0,[0,4,7,11,15][Math.min(4,an.good.length)]-3*an.over.length);
  const cats={};[...bad,...warn].forEach(x=>cats[x.cat]=(cats[x.cat]||0)+1);
  return {total:content+len+lang+link+voc,parts:[['Inhalt',content,30],['Länge',len,10],['Sprache',lang,30],['Bindewörter',link,15],['Wortschatz',voc,15]],n,issues,an,cats};}
 function viewResult(){const t=TASKS.find(x=>x.id===S.cur.t);const text=S.cur.level===3?S.cur.free:assemble(t);const r=score(t,text);const lvlBefore=S.cur.level;
- S.hist.push({t:t.id,s:r.total,d:Math.floor(Date.now()/864e5),c:r.cats,l:lvlBefore});let lvlMsg='';
+ S.hist.push({t:t.id,s:r.total,d:Math.floor(Date.now()/864e5),c:r.cats,l:lvlBefore,x:text,hp:S.cur.help?1:0});let lvlMsg='';
  if(r.total>=75&&S.level<3&&S.level===lvlBefore){S.level++;lvlMsg=`<div class="f ok">🎉 Super! Du steigst auf <b>Stufe ${S.level}</b> auf: ${LEVELS[S.level].split('– ')[1]}.</div>`;}
  else if(r.total<50&&lvlBefore>1)lvlMsg=`<div class="f warn">Tipp: Probier die nächste Aufgabe noch einmal auf <b>Stufe ${lvlBefore-1}</b> (oben auf der Startseite einstellbar).</div>`;
  const prev=S.hist.filter(h=>h.t!==undefined).slice(-2,-1)[0];const diff=prev?r.total-prev.s:null;S.cur.done=true;save();
