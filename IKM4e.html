@@ -6,7 +6,7 @@
 <title>iKMPLUS-Probetestung Englisch – 4. Klasse</title>
 <meta name="uebersicht-kapitel" content="Englisch – iKMPLUS">
 <meta name="uebersicht-thema" content="Probetestung Englisch (Listening &amp; Reading)">
-<meta name="uebersicht-info" content="Aufbau wie das IQS-Muster-Aufgabenpaket, 8. Schulstufe: Gist, Main Ideas, Specific Information; A2–B1; ca. 45 min; 3 Runden mit neuen Texten">
+<meta name="uebersicht-info" content="Aufbau wie das IQS-Muster-Aufgabenpaket, 8. Schulstufe: Gist, Main Ideas, Specific Information; A2–B1; ca. 45 min; zusätzlich Writing (Short und Long Task wie im Zyklusmodul) mit Selbstcheck; 3 Runden mit neuen Texten">
 <meta name="uebersicht-gruppe" content="4. Klasse">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -112,6 +112,13 @@ td.r,th.r{text-align:right}
 .legend{display:grid;gap:4px;background:var(--paper);border:2px solid var(--navy);border-radius:6px;padding:12px 14px;margin-bottom:14px}
 .legend b{display:inline-block;min-width:1.6em;color:var(--navy)}
 .tw{overflow-x:auto}
+textarea{font:inherit;font-size:1.05rem;line-height:1.5;width:100%;padding:12px;border:2px solid var(--line);border-radius:6px;background:var(--sheet);color:var(--ink);resize:vertical}
+textarea:focus{outline:none;border-color:var(--navy)}
+.wc{margin-top:6px;font-weight:700}.wc.ok{color:var(--ok)}.wc.low,.wc.high{color:var(--bad)}
+.pts{margin:4px 0 0;padding-left:1.3em}
+.chk{list-style:none;padding:0;margin:6px 0 14px}.chk li{padding:4px 0}.chk li.ok{color:var(--ok)}.chk li.no{color:var(--bad)}
+.selfc{display:grid;gap:8px;margin-bottom:8px}.cb{display:flex;gap:10px;align-items:flex-start}.cb input{width:22px;height:22px;flex:0 0 auto;margin-top:2px}
+.wtext{white-space:pre-wrap;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
 .vtip{margin:4px 0 16px;font-size:.95rem}
 .vtip summary{cursor:pointer;color:var(--navy);font-weight:700}
 #vsel{width:100%;max-width:420px}
@@ -251,6 +258,36 @@ R5:[
          {q:"Where can you park for free?", accept:["garage","behind the cinema"], reject:[]}]}
 ]
 };
+
+var WRITE=[
+ [{kind:"short",type:"Message",words:[40,70],mins:15,email:true,
+   task:"Your English friend Sam wants to meet you on Saturday, but you can’t. Write a message to Sam.",
+   points:["Say sorry and explain why you can’t come.","Suggest another day and time.","Suggest something you could do together."]},
+  {kind:"long",type:"E-mail",words:[120,180],mins:25,email:true,
+   task:"You have just come back from a school trip. Write an e-mail to your e-pal Jamie about it.",
+   points:["Where did you go and how did you travel?","What did you do there?","What did you like best and why?","Tell Jamie about something funny or something that went wrong."]}],
+ [{kind:"short",type:"Note",words:[40,70],mins:15,email:true,
+   task:"You are staying with a host family in England. This afternoon you want to go into town with some friends. Write a note to your host mother, Mrs Green.",
+   points:["Say where you are going and who with.","Say when you will be back.","Ask if you should buy something for her or if you will be home for dinner."]},
+  {kind:"long",type:"Online posting",words:[120,180],mins:25,email:false,
+   task:"A website for teenagers asks: “What is your favourite free-time activity?” Write a post for the website.",
+   points:["What is the activity and how did you start?","How often and where do you do it?","Why do you like it so much?","Give some advice to people who want to try it."]}],
+ [{kind:"short",type:"E-mail",words:[40,70],mins:15,email:true,
+   task:"Your friend Alex has invited you to a birthday party next Saturday. Write an e-mail back to Alex.",
+   points:["Thank Alex and say that you can come.","Ask about the time or what you should bring.","Offer to help with something for the party."]},
+  {kind:"long",type:"Story",words:[120,180],mins:25,email:false,
+   task:"Write a story for your school magazine. It must begin with this sentence: “When I opened the door, I couldn’t believe my eyes …”",
+   points:["Say where you were and who was there.","Describe what happened.","Say how the people felt.","Explain how the story ended."]}]
+];
+var LINKERS=["because","but","so","and then","then","first","after that","later","finally","however","also","when","while","although","in the end","that’s why","that's why","or"];
+var WTIPS='<div class="merk"><h3>Merkkasten: So schreibst du einen guten Text</h3><ol>'+
+ '<li><b>Alle Inhaltspunkte</b> der Angabe bearbeiten – fehlt einer, gibt es weniger Punkte.</li>'+
+ '<li><b>Wortanzahl einhalten</b> (Short Task 40–70, Long Task 120–180 Wörter).</li>'+
+ '<li><b>Textsorte beachten:</b> Bei Nachricht, Notiz und E-Mail gehören eine Anrede (<i>Hi Sam, Dear Mrs Green</i>) und ein Schluss (<i>See you, Love, Best wishes</i>) dazu.</li>'+
+ '<li><b>Sätze verbinden</b> mit <i>because, but, so, then, after that, however</i>.</li>'+
+ '<li><b>Abwechslungsreiche Wörter</b> verwenden – nicht immer nur <i>nice</i> und <i>good</i>.</li></ol>'+
+ '<p><b>Beispiel (Short Task, Inhaltspunkt „Say sorry and explain why“):</b><br>❌ <i>I can’t come.</i><br>✔ <i>I’m really sorry, but I can’t come on Saturday because I have to visit my grandparents.</i></p>'+
+ '<p class="heft">✏️ Schreib diesen Merkkasten mit dem Beispiel in dein Heft ab!</p></div>';
 /* ================= TEILE ================= */
 var PARTS = [
  {id:"L1",skill:"L",field:"G", name:"Listening 1"},
@@ -263,7 +300,9 @@ var PARTS = [
  {id:"R2",skill:"R",field:"G", name:"Reading 2"},
  {id:"R3",skill:"R",field:"MI",name:"Reading 3"},
  {id:"R4",skill:"R",field:"MI",name:"Reading 4"},
- {id:"R5",skill:"R",field:"SI",name:"Reading 5"}
+ {id:"R5",skill:"R",field:"SI",name:"Reading 5"},
+ {id:"W1",skill:"W",field:"W",name:"Writing 1"},
+ {id:"W2",skill:"W",field:"W",name:"Writing 2"}
 ];
 var FIELDS = {G:"Globales Verstehen (Gist)", MI:"Hauptaussagen und Details (Main Ideas)", SI:"Spezifische Informationen (Specific Information)"};
 var MAXPTS = 32;
@@ -300,6 +339,7 @@ function buildRound(r){
     items:r4.paras.map(function(p,i){return {type:"sel",q:"Paragraph "+(i+1),text:[p[0]],opts:r4.opts,a:p[1]}})});
   var r5=SETS.R5[k]; P.push({text:r5.text, qFirst:true, title:r5.title, instr:"Read the questions first. Then find the answers in the text. Answer in <b>1–3 words</b>.", de:"Zuerst die Fragen lesen, dann im Text gezielt suchen. Rechtschreibfehler sind egal.",
     items:r5.items.map(function(o){return {type:"text",q:o.q,accept:o.accept,reject:o.reject}})});
+  WRITE[k].forEach(function(w){P.push({write:w,title:(w.kind==="short"?"Short task: ":"Long task: ")+w.type,items:[],text:"",checks:{}})});
   P.forEach(function(p,i){var m=PARTS[i];p.id=m.id;p.skill=m.skill;p.field=m.field;p.name=m.name;p.ans=p.items.map(function(){return null});p.checked=false;p.score=0;p.plays={}});
   return P;
 }
@@ -420,25 +460,31 @@ var AUDIO={};
 
 /* ================= BILDSCHIRM-TASTATUR ================= */
 var activeInput=null;
+var KBSHIFT=false;
 function buildKB(){
-  var rows=["qwertyuiop","asdfghjkl","zxcvbnm"], h="";
-  rows.forEach(function(r,i){h+='<div class="kr">';r.split("").forEach(function(c){h+='<button type="button" data-k="'+c+'">'+c+'</button>'});if(i===2)h+='<button type="button" class="wide" data-k="BS" aria-label="Löschen">⌫</button>';h+='</div>'});
-  h+='<div class="kr">'+"1234567890".split("").map(function(c){return '<button type="button" data-k="'+c+'">'+c+'</button>'}).join("")+'</div>';
-  h+='<div class="kr"><button type="button" data-k="’">’</button><button type="button" class="space" data-k=" ">Leertaste</button><button type="button" class="wide" data-k="OK">Fertig</button></div>';
+  var rows=["1234567890","qwertyuiop","asdfghjkl","zxcvbnm"], h="";
+  rows.forEach(function(r,i){h+='<div class="kr">';if(i===3)h+='<button type="button" class="wide" data-k="SH" aria-label="Großbuchstabe">⇧</button>';r.split("").forEach(function(c){h+='<button type="button" data-k="'+c+'" class="ch">'+c+'</button>'});if(i===3)h+='<button type="button" class="wide" data-k="BS" aria-label="Löschen">⌫</button>';h+='</div>'});
+  h+='<div class="kr">'+[".",",","!","?","’","-",":","€"].map(function(c){return '<button type="button" data-k="'+c+'">'+c+'</button>'}).join("")+'</div>';
+  h+='<div class="kr"><button type="button" class="space" data-k=" ">Leertaste</button><button type="button" class="wide" data-k="NL" id="kbnl">↵ Zeile</button><button type="button" class="wide" data-k="OK">Fertig</button></div>';
   var kb=document.getElementById("kb"); kb.innerHTML=h;
   kb.addEventListener("pointerdown",function(e){e.preventDefault()});
   kb.addEventListener("click",function(e){
     var b=e.target.closest("button"); if(!b||!activeInput)return;
     var k=b.dataset.k;
     if(k==="OK"){hideKB();return}
-    if(k==="BS")activeInput.value=activeInput.value.slice(0,-1); else activeInput.value+=k;
+    if(k==="SH"){KBSHIFT=!KBSHIFT;kbCase();return}
+    if(k==="BS")activeInput.value=activeInput.value.slice(0,-1);
+    else if(k==="NL")activeInput.value+="\n";
+    else{var c=k;if(KBSHIFT&&/[a-z]/.test(c)){c=c.toUpperCase();KBSHIFT=false;kbCase()}activeInput.value+=c}
     activeInput.dispatchEvent(new Event("input",{bubbles:true}));
+    if(activeInput.tagName==="TEXTAREA")activeInput.scrollTop=activeInput.scrollHeight;
   });
 }
-function showKB(inp){activeInput=inp;document.getElementById("kb").classList.remove("hidden");setTimeout(function(){inp.scrollIntoView({block:"center",behavior:"smooth"})},50)}
+function kbCase(){document.querySelectorAll("#kb .ch").forEach(function(b){if(/[a-z]/i.test(b.dataset.k))b.textContent=KBSHIFT?b.dataset.k.toUpperCase():b.dataset.k})}
+function showKB(inp){activeInput=inp;document.getElementById("kb").classList.remove("hidden");var nl=document.getElementById("kbnl");if(nl)nl.style.display=inp.tagName==="TEXTAREA"?"":"none";setTimeout(function(){inp.scrollIntoView({block:"center",behavior:"smooth"})},50)}
 function hideKB(){activeInput=null;document.getElementById("kb").classList.add("hidden")}
-document.addEventListener("focusin",function(e){if(e.target.matches("input[type=text]:not([disabled])"))showKB(e.target)});
-document.addEventListener("pointerdown",function(e){if(!e.target.closest("#kb")&&!e.target.matches("input[type=text]"))hideKB()});
+document.addEventListener("focusin",function(e){if(e.target.matches("input[type=text]:not([disabled]),textarea:not([disabled])"))showKB(e.target)});
+document.addEventListener("pointerdown",function(e){if(!e.target.closest("#kb")&&!e.target.matches("input[type=text],textarea"))hideKB()});
 
 /* ================= ANZEIGE ================= */
 var app=document.getElementById("app");
@@ -454,7 +500,7 @@ function startScreen(){
   S.parts=[];strip();
   app.innerHTML='<section class="sheet pop">'+
    '<h2>Probetestung Englisch</h2>'+
-   '<p class="task">Aufgebaut wie die iKMPLUS in der 4. Klasse: zuerst <b>Listening</b> (6 Teile), dann <b>Reading</b> (5 Teile). Jeder Hörtext kann <b>2×</b> abgespielt werden. Du brauchst ungefähr 45 Minuten. Kopfhörer verwenden und am iPad den Lautlos-Schalter ausschalten!</p>'+
+   '<p class="task">Aufgebaut wie die iKMPLUS in der 4. Klasse: zuerst <b>Listening</b> (6 Teile), dann <b>Reading</b> (5 Teile), zum Schluss <b>Writing</b> (2 Texte). Jeder Hörtext kann <b>2×</b> abgespielt werden. Listening und Reading dauern ungefähr 45 Minuten, Writing ungefähr 40 Minuten. Kopfhörer verwenden und am iPad den Lautlos-Schalter ausschalten!</p>'+
    '<div class="audio"><button class="play" id="tt">🔊 Ton testen</button><span class="plays" id="ttl"></span></div>'+
    '<label class="lbl" for="nm">Dein Vor- und Nachname</label><input type="text" id="nm" autocomplete="off">'+
    '<label class="lbl" for="cd" style="margin-top:16px">Speicher-Code (nur wenn du schon eine Runde gemacht hast)</label><input type="text" id="cd" autocomplete="off" placeholder="z. B. 1-14-K3F9">'+
@@ -502,6 +548,7 @@ var MERK='<div class="merk"><h3>Merkkasten: So gehst du bei der iKMPLUS Englisch
  '<p class="heft">✏️ Schreib diesen Merkkasten mit dem Beispiel in dein Heft ab!</p></div>';
 
 function renderPart(){
+  if(S.parts[S.part].write){strip();hideKB();stopSay();renderWrite();return}
   strip(); hideKB(); stopSay();
   var pi=S.part, p=S.parts[pi], ch=p.checked, h='<section class="sheet pop">';
   AUDIO={};
@@ -564,6 +611,67 @@ function bindPart(){
   if(nx)nx.onclick=function(){if(S.part<S.parts.length-1){S.part++;renderPart();window.scrollTo({top:0})}else finish()};
 }
 
+
+function wordCount(t){var m=String(t||"").trim().match(/[A-Za-zÄÖÜäöüß0-9’']+/g);return m?m.length:0}
+function autoChecks(w,t){
+  var n=wordCount(t), low=" "+t.toLowerCase().replace(/[’]/g,"'")+" ", res=[];
+  var okW=n>=w.words[0]&&n<=w.words[1];
+  res.push({ok:okW,auto:true,label:"Wortanzahl "+w.words[0]+"–"+w.words[1]+" (du hast "+n+")"});
+  var link=LINKERS.filter(function(x){return new RegExp("[^a-z]"+x.replace(/'/g,"'")+"[^a-z]").test(low)});
+  res.push({ok:link.length>=(w.kind==="long"?4:2),auto:true,label:"Verbindungswörter ("+(link.length?link.slice(0,6).join(", "):"keine gefunden")+")"});
+  if(w.email){
+    var first=t.trim().split(/\n/)[0]||"", last=t.trim().split(/\n/).slice(-2).join(" ");
+    res.push({ok:/^(hi|hello|hey|dear)\b/i.test(first.trim()),auto:true,label:"Anrede am Anfang (z. B. Hi Sam, / Dear Mrs Green,)"});
+    res.push({ok:/(love|best|bye|see you|cheers|regards|wishes|take care|talk soon|hugs|thanks)/i.test(last),auto:true,label:"Schluss am Ende (z. B. See you, / Love, / Best wishes,)"});
+  }
+  if(w.kind==="long")res.push({ok:t.trim().split(/\n\s*\n|\n/).filter(function(x){return wordCount(x)>=8}).length>=3,auto:true,label:"Text in Absätze gegliedert (mindestens 3)"});
+  var rep2=(low.match(/[^a-z](nice|good)[^a-z]/g)||[]).length;
+  res.push({ok:rep2<=2,auto:true,label:"Abwechslungsreiche Wörter (nice/good nur "+rep2+"× verwendet)"});
+  return res;
+}
+function renderWrite(){
+  var p=S.parts[S.part], w=p.write, ch=p.checked, h='<section class="sheet pop">';
+  h+='<h2>'+p.name+': '+esc(p.title)+'</h2><p class="task">Write about <b>'+w.words[0]+'–'+w.words[1]+' words</b>. Time: about <b>'+w.mins+' minutes</b>.<br>Bearbeite alle Punkte der Angabe. Schreib den Text hier oder zuerst ins Heft.</p>';
+  if(w.kind==="short"&&!ch)h+=WTIPS;
+  h+='<div class="text"><p><b>'+esc(w.task)+'</b></p><p>In your '+esc(w.type.toLowerCase())+':</p><ul class="pts">'+w.points.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul></div>';
+  h+='<textarea id="wt" inputmode="none" autocapitalize="sentences" spellcheck="false" rows="'+(w.kind==="long"?14:8)+'"'+(ch?" disabled":"")+'>'+esc(p.text)+'</textarea>';
+  h+='<div class="wc" id="wc"></div>';
+  if(!ch){h+='<div id="pe"></div><div class="row"><button class="btn" id="wdone">Text fertig – Selbstcheck</button></div>'}
+  else{
+    var ac=autoChecks(w,p.text);
+    h+='<h3 style="margin-top:18px">Automatischer Check</h3><ul class="chk">'+ac.map(function(c){return '<li class="'+(c.ok?"ok":"no")+'">'+(c.ok?"✔ ":"✘ ")+esc(c.label)+'</li>'}).join("")+'</ul>';
+    h+='<h3>Dein Selbstcheck – hake ehrlich ab:</h3><div class="selfc">';
+    var own=w.points.map(function(x){return "Inhalt: "+x}).concat(["Grammatik: Ich habe meinen Text auf Fehler durchgelesen (Zeitformen, he/she/it + s, Groß- und Kleinschreibung).","Wortschatz: Ich habe passende englische Wörter verwendet und nichts auf Deutsch geschrieben."]);
+    own.forEach(function(x,i){h+='<label class="cb"><input type="checkbox" data-c="'+i+'"'+(p.checks[i]?" checked":"")+'> '+esc(x)+'</label>'});
+    h+='</div><p class="hint">Die Lehrkraft bewertet deinen Text nach denselben Kriterien wie bei der iKMPLUS: Aufgabenerfüllung, Aufbau, Grammatik und Wortschatz.</p>';
+    h+='<div class="row"><button class="btn ghost" id="wback">Text noch einmal bearbeiten</button><button class="btn" id="nx">'+(S.part<S.parts.length-1?"Weiter zu "+S.parts[S.part+1].name:"Zur Auswertung")+'</button></div>';
+  }
+  h+='</section>';
+  app.innerHTML=h;
+  var ta=document.getElementById("wt"), wc=document.getElementById("wc");
+  function upd(){var n=wordCount(ta.value);wc.textContent=n+" Wörter (Ziel: "+w.words[0]+"–"+w.words[1]+")";wc.className="wc "+(n<w.words[0]?"low":n>w.words[1]?"high":"ok")}
+  ta.addEventListener("input",function(){p.text=ta.value;upd()});upd();
+  var d=document.getElementById("wdone");
+  if(d)d.onclick=function(){
+    var n=wordCount(p.text);
+    if(n<10){document.getElementById("pe").innerHTML='<p class="err">Bitte schreib zuerst deinen Text.</p>';return}
+    if(n<w.words[0]&&!d.dataset.warn){document.getElementById("pe").innerHTML='<p class="err">Dein Text ist noch zu kurz ('+n+' Wörter). Nochmals tippen, um trotzdem weiterzumachen.</p>';d.dataset.warn=1;return}
+    p.checked=true;hideKB();renderWrite();window.scrollTo({top:0});strip();
+  };
+  app.querySelectorAll("input[data-c]").forEach(function(c){c.onchange=function(){p.checks[c.dataset.c]=c.checked}});
+  var bk=document.getElementById("wback"); if(bk)bk.onclick=function(){p.checked=false;renderWrite();strip()};
+  var nx=document.getElementById("nx"); if(nx)nx.onclick=function(){if(S.part<S.parts.length-1){S.part++;renderPart();window.scrollTo({top:0})}else finish()};
+}
+function writeSummary(){
+  var h='', txt='Name: '+S.name+'\nRunde: '+S.rounds+'\n';
+  S.parts.filter(function(p){return p.write}).forEach(function(p){
+    var w=p.write, ac=autoChecks(w,p.text), okA=ac.filter(function(c){return c.ok}).length, nOwn=w.points.length+2, okO=0;
+    for(var i=0;i<nOwn;i++)if(p.checks[i])okO++;
+    h+='<h3 style="margin-top:16px">'+p.name+' – '+esc(p.title)+'</h3><p class="hint">'+wordCount(p.text)+' Wörter · Automatischer Check: '+okA+'/'+ac.length+' · Selbstcheck: '+okO+'/'+nOwn+'</p><div class="wtext">'+esc(p.text||"(kein Text)")+'</div>';
+    txt+='\n'+p.name+' – '+p.title+'\nAufgabe: '+w.task+'\n'+wordCount(p.text)+' Wörter\n\n'+(p.text||"(kein Text)")+'\n';
+  });
+  return {html:h,text:txt};
+}
 function finish(){
   var tot=0;S.parts.forEach(function(p){tot+=p.score});
   S.history.push(tot);S.rounds++;S.finished=true;strip();
@@ -582,11 +690,14 @@ function finish(){
   if(weak&&wp<1)h+='<p style="margin-top:14px"><b>Tipp für dich – '+FIELDS[weak]+':</b> '+tips[weak]+'</p>';
   if(S.history.length>1)h+='<p class="hint" style="margin-top:12px">Bisherige Runden: '+S.history.map(function(x,i){return "Runde "+(i+1)+": "+x+"/"+MAXPTS}).join(", ")+'</p>';
   h+='<p class="hint">Hinweis: Das ist eine Übung im Stil der iKMPLUS, keine echte Testung und keine offizielle Einstufung.</p></section>';
+  var WS=writeSummary();
+  h+='<section class="sheet"><h2>Writing</h2><p class="task">Deine Texte werden nicht automatisch benotet. Zeig sie deiner Lehrkraft oder kopiere sie und schick sie ihr.</p>'+WS.html+'<div class="row"><button class="btn ghost" id="cpw">Texte kopieren</button></div></section>';
   h+='<section class="sheet"><h3>Speicher-Code</h3><p class="task">Mit diesem Code machst du auf einem anderen Gerät mit der nächsten Runde weiter. Er funktioniert nur mit deinem Namen.</p><span class="code" id="code">'+makeCode()+'</span><div class="row"><button class="btn ghost" id="cp">Code kopieren</button></div></section>';
   h+='<section class="sheet"><h3>Noch einmal üben?</h3><p class="task">'+(S.rounds%3===0?"Du hast alle drei Runden geschafft. Die nächste Runde beginnt wieder mit den ersten Texten, die Antworten sind aber neu gemischt.":"Die nächste Runde hat ganz neue Hör- und Lesetexte.")+'</p><button class="btn" id="nr">Neue Runde starten</button></section>';
   app.innerHTML=h;window.scrollTo({top:0});
   document.getElementById("cp").onclick=function(){var c=document.getElementById("code").textContent,b=this;try{navigator.clipboard.writeText(c).then(function(){b.textContent="Kopiert"},function(){b.textContent="Bitte abschreiben"})}catch(e){b.textContent="Bitte abschreiben"}};
   document.getElementById("nr").onclick=newRound;
+  document.getElementById("cpw").onclick=function(){var b=this;try{navigator.clipboard.writeText(WS.text).then(function(){b.textContent="Kopiert"},function(){b.textContent="Kopieren nicht möglich"})}catch(e){b.textContent="Kopieren nicht möglich"}};
 }
 
 buildKB();
